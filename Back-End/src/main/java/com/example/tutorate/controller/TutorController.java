@@ -66,6 +66,7 @@ public class TutorController {
         return null;
     }
 
+    
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteTutor(@RequestBody Tutor tutor , HttpServletRequest request){
         HttpSession session=request.getSession();
