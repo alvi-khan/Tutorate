@@ -1,4 +1,5 @@
-import React, {useState} from 'react';
+own.Menu>
+            </Dropdown>import React, {useState} from 'react';
 import '../stylesheets/ProfileBar.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Dropdown } from 'react-bootstrap';
@@ -30,7 +31,7 @@ export const ProfileBar = () => {
                     className="profileBar"
                     onClick={() => {setProfileDialogShow(true)}}>
                     <i className="icon bi bi-person-circle" />
-                    Profile
+                    Log In
                 </button>
                 <div>
                     <ProfileDialog
@@ -61,6 +62,13 @@ export const ProfileBar = () => {
                     </Dropdown.Item>
                     <TutorProfileForm show={formShown} onHide={() => setFormShown(false)}/>
                     <Dropdown.Item
+                        hidden={user.role === 'tutor'}
+                        className="dropdown-item"
+                        onClick={() => {setFormShown(true)}}>
+                        <i className="icon bi bi-pencil-square" />
+                        Edit Profile
+                    </Dropdown.Item> */}
+                    <Dropdown.Item
                         hidden={user.role === 'user'}
                         className="dropdown-item"
                         onClick={() => {history.push("/" + user.tutor.id);}}>
@@ -75,6 +83,10 @@ export const ProfileBar = () => {
                     </Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
+        );
+    }
+}
+
         );
     }
 }
