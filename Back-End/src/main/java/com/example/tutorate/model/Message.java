@@ -4,8 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import java.util.ArrayList;
-import java.util.Map;
 
 @Entity
 public class Message {
@@ -16,8 +14,7 @@ public class Message {
     private String receiverName;
     private  String message;
     private Status status;
-
-    public Message(){
+    public Message() {
 
     }
 
@@ -27,7 +24,6 @@ public class Message {
         this.message=message;
         this.status=status;
     }
-
 
     public String getSenderName() {
         return senderName;

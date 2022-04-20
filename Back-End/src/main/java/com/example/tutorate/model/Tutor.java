@@ -1,7 +1,5 @@
 package com.example.tutorate.model;
 
-import org.hibernate.mapping.Map;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
