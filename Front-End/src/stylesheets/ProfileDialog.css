@@ -8,7 +8,7 @@
     width: fit-content;
     height: fit-content;
 
-    border: 2px solid #1f252d;
+    border: 2px solid #DBE0E1;
     border-radius: 10px;
 }
 
@@ -58,7 +58,7 @@
     height: 6px;
     border-radius: 3px;
     margin-top: 3px;
-    outline: 1.5px solid #1f252d;
+    outline: 1.5px solid #EAEEEF;
     background-color: #f1f1f6;
     display: block;
     margin-left: 0px;
@@ -66,15 +66,15 @@
 }
 
 .inputProfileInfo:focus {
-    outline: 3px solid #1f252d;
+    outline: 1px solid #1f252d;
 }
 
 .submitButton {
     width: 250px;
     height: 36px;
-    background-color: rgb(191 219 254);
-    color: #374151;
-    font-weight: 800;
+    background-color: #5EBCD7;
+    color: white;
+    font-weight: 600;
     border-radius: 3px;
     font-size: 14px;
     margin: 10px 20px 50px;
@@ -85,7 +85,7 @@
 }
 
 .submitButton:hover {
-    background-color: rgb(96 165 250);
+    background-color: #92CFE0;
 }
 
 .dialogSwitchButtonContainer {
@@ -112,7 +112,7 @@
 
 .profileDialogContainer .error {
     font-size: 12px;
-    color: #ff0033;
+    color: #DF2A2A;
     margin-top: 5px;
     margin-bottom: 0px;
     height: 20px;

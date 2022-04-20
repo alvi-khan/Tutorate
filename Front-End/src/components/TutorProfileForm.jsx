@@ -66,7 +66,7 @@ export const TutorProfileForm = (props) => {
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField fullWidth required name="phone" label="Phone" type="number"
+                                <TextField fullWidth name="phone" label="Phone" type="number"
                                            onChange={(event) => setPhone(event.target.value)}
                                 />
                             </Grid>

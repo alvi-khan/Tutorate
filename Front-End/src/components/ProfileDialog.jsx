@@ -41,12 +41,14 @@ export const ProfileDialog = (props) => {
 
         let userObject = await res.json();
 
-        if (userObject != null) {
+        if(userObject.password == "invalid")
+            setPasswordError("Incorrect Password!");
+
+        else {
             setUser(userObject);
             localStorage.setItem('user', JSON.stringify(userObject));
             props.onHide();
         }
-        else    setPasswordError("Incorrect Password!");
     }
 
     const register = async () => {
@@ -95,7 +97,7 @@ export const ProfileDialog = (props) => {
             overlayClassName="profileOverlay"
         >
             <div class="profileDialogContainer">
-                <h1 class="appTitle">Tutorate</h1>
+                <h1 class="appTitle">TutoRate</h1>
                 <form onSubmit={(event) => handleSubmit(event)}>
                     <label className="profileFormLabel">
                         Username

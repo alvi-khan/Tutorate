@@ -47,12 +47,13 @@
 }
 
 .profileOptions .dropdown-menu {
-    background-color: rgb(191 219 254);
+    background-color: #E7F2F8;
     height: fit-content;
     min-width: 100px;
     max-height: 200px;
     padding: 5px;
     margin-left: -50px;
+    border: none;
 }
 
 .profileOptions .dropdown-item {
@@ -69,6 +70,6 @@
 }
 
 .profileOptions .dropdown-item:hover {
-    background-color: rgb(96 165 250);
+    background-color: #44B1D0;
     color: #ffffff;
 }

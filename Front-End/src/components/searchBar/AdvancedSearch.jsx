@@ -30,7 +30,7 @@ export const AdvancedSearch = (props) => {
       className="AdvancedSearch"
       overlayClassName="AdvancedSearchOverlay"
     >
-      <h3 className="fs-4 title">Search Filters</h3>
+      <h3 className="fs-4 text-center title">Search Filters</h3>
       <div className="optionsContainer">
         <Grid container spacing={4}>
           <Grid item xs={2} className="d-inline-flex">

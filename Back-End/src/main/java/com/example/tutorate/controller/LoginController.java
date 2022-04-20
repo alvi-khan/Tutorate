@@ -29,7 +29,10 @@ public class LoginController {
             session.setAttribute("User", user.getUsername());
             return userRepository.findByUsername(user.getUsername());
         }
-        else   return null;
+        else  {
+            User invalid = new User();
+            invalid.setPassword("invalid");
+            return invalid; }
     }
 
     @PostMapping("/register")
@@ -39,6 +42,7 @@ public class LoginController {
         return userService.addNewUser(user);
     }
 
+ 
     @GetMapping("/logout")
     public void logout (HttpServletRequest request) {
         HttpSession session = request.getSession();
