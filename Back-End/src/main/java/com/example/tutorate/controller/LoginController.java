@@ -42,6 +42,7 @@ public class LoginController {
         return userService.addNewUser(user);
     }
 
+ 
     @GetMapping("/logout")
     public void logout (HttpServletRequest request) {
         HttpSession session = request.getSession();
