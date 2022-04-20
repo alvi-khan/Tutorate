@@ -89,4 +89,8 @@ public class TutorServiceImpl implements TutorService{
             return true;
         else    return false;
     }
+        @Override
+    public Integer deleteById(int id) {
+        return null;
+    }
 }
