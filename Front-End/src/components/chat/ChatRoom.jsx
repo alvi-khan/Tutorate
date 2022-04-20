@@ -1,11 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, {useEffect, useState} from 'react'
 import {over} from 'stompjs';
 import SockJS from 'sockjs-client';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import "../stylesheets/ChatRoom.css";
+import "../../stylesheets/ChatRoom.css";
+import {useStateContext} from "../../contexts/StateContextProvider";
+import {ContactList} from "./ContactList";
 
-var stompClient = null;
 export const ChatRoom = () => {
+    const {user} = useStateContext();
     const [privateChats, setPrivateChats] = useState(new Map());     
     const [publicChats, setPublicChats] = useState([]);
     const [tab, setTab] = useState("CHATROOM");
@@ -15,6 +17,12 @@ export const ChatRoom = () => {
         connected: false,
         message: ''
       });
+    let stompClient = null;
+
+    useEffect(async () => {
+        setUserData({...userData, username: user.username});
+        connect();
+    }, [])
 
     const connect = () => {
         let Sock = new SockJS('http://localhost:8080/ws');
@@ -28,36 +36,35 @@ export const ChatRoom = () => {
 
     const onConnected = () => {
         setUserData({...userData, "connected": true});
-        stompClient.subscribe('/chatroom/public', onMessageReceived);
-        stompClient.subscribe('/user/' + userData.username + '/private', onPrivateMessage);
+        stompClient.subscribe('/user/' + user.username + '/private', onPrivateMessage);
         userJoin();
     }
 
     const userJoin = async () => {
-          var chatMessage = {
-            senderName: userData.username,
+          let chatMessage = {
+            senderName: user.username,
             status: "JOIN"
           };
           stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
 
-          const res = await fetch(`http://localhost:8080/message/prefetch?name=${userData.username}`, {
+          const res = await fetch(`http://localhost:8080/message/prefetch?name=${user.username}`, {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
           });
 
           const data = await res.json();
-
-          var all = data.map(function(item, index) {
+          console.log(data);
+          data.map((item, index) => {
               if(userData.username != item.senderName) {
                   if(privateChats.get(item.senderName)) {
                       privateChats.get(item.senderName).push(item);
                       setPrivateChats(new Map(privateChats));
                   }
                   else {
-                      let list =[];
+                      let list = [];
                       list.push(item);
-                      privateChats.set(item.senderName,list);
+                      privateChats.set(item.senderName, list);
                       setPrivateChats(new Map(privateChats));
                   }
               }
@@ -67,9 +74,9 @@ export const ChatRoom = () => {
                       setPrivateChats(new Map(privateChats));
                   }
                   else {
-                      let list =[];
+                      let list = [];
                       list.push(item);
-                      privateChats.set(item.receiverName,list);
+                      privateChats.set(item.receiverName, list);
                       setPrivateChats(new Map(privateChats));
                   }
               }
@@ -168,32 +175,10 @@ export const ChatRoom = () => {
         const {value} = event.target;
         setUserData({...userData, "username": value});
     }
- 
-    const registerUser = async() => {
-        const res = await fetch(`http://localhost:8080/user/checkSession?username=${userData.username}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-        });
-
-        const check = await res.json();
-        if(check == true) connect();
-    }
-
-    useEffect(async () => {
-        await registerUser();
-    }, [])
     
     return (
         <div className="chat-box">
-            <div className="member-list">
-                <ul>
-                    <li onClick={()=>{setTab("CHATROOM")}} className={`member ${tab==="CHATROOM" && "active"}`}>Chatroom</li>
-                    {[...privateChats.keys()].map((name,index)=>(
-                        <li onClick={()=>{setTab(name)}} className={`member ${tab===name && "active"}`} key={index}>{name}</li>
-                    ))}
-                </ul>
-            </div>
+            <ContactList contacts={["CHATROOM", ...privateChats.keys()]} selectContact={setTab}/>
             {tab==="CHATROOM" && <div className="chat-content">
                 <ul className="chat-messages">
                     {publicChats.map((chat,index)=>(

@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 
 import { Results } from './Results';
 import { TutorProfile } from "./TutorProfile";
-import { ChatRoom } from "./ChatRoom"
+import { ChatRoom } from "./chat/ChatRoom"
 export const Routes = () => (
   <Switch>
     <Route exact path="/">

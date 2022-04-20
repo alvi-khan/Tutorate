@@ -26,7 +26,7 @@ public class ChatController {
     @MessageMapping("/private-message")
     public Message receivePrivateMessage(@Payload Message message) {
         messageRepository.save(message);
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(),"/private",message);
+        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(), "/private", message);
         return message;
     }
 }

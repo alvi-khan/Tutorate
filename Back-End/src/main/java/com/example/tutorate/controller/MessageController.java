@@ -14,5 +14,7 @@ public class MessageController{
     private MessageRepository messageRepository;
 
     @GetMapping("/prefetch")
-    List<Message> getMessage( String name) { return messageRepository.getPrefetchMessages(name); }
+    List<Message> getMessage(@RequestParam("name") String name) {
+        return messageRepository.getPrefetchMessages(name);
+    }
 }

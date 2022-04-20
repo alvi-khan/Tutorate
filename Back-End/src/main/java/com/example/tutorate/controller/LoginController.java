@@ -47,11 +47,8 @@ public class LoginController {
 
     @GetMapping("/checkSession")
     public boolean checkSessionByUsername(String username, HttpServletRequest request){
-        System.out.println(username);
-        System.out.println(request.getSession().getAttribute("User"));
         if(request.getSession().getAttribute("User").equals(username))
             return true;
-
-            return false;
+        else    return false;
     }
 }
