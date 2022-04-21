@@ -49,7 +49,7 @@ export const TutorProfile = () => {
                 </React.Fragment>
             );
         }
-        else {
+        else if (tutor.user) {
             return (
                 <React.Fragment>
                     <button className="button mx-auto mt-4" type="submit"
@@ -57,6 +57,12 @@ export const TutorProfile = () => {
                         <i className="icon bi bi-pencil-square" />
                         &nbsp;Write a Review
                     </button>
+                    <Link to={{pathname: "/chats", state: {receiver: tutor.user.username}}}>
+                        <button className="button mx-auto mt-4" type="submit">
+                            <i className="icon bi bi-pencil-square" />
+                            &nbsp;Send Message
+                        </button>
+                    </Link>
                     <RateForm show={formShown} onHide={handleRateFormClose} tutor_id={id}/>
                 </React.Fragment>
             );
@@ -95,7 +101,9 @@ export const TutorProfile = () => {
                         })}
                         <p className="mb-2"><i className="bi bi-cash-stack"/>&nbsp;BDT {tutor.min_wage}</p>
                     </div>
-                    {getButton()}
+                    <div className="d-inline-flex">
+                        {getButton()}
+                    </div>
                 </div>
                 <Reviews refetch={refetch} id={id}/>
             </div>

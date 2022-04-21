@@ -9,7 +9,7 @@ export const Routes = () => (
     <Route exact path="/">
       <Results />
     </Route>
-    <Route exact path="/req">
+    <Route exact path="/chats">
         <ChatRoom />
     </Route>
       <Route path="/:id">
