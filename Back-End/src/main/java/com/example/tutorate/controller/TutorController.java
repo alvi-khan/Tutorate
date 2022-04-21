@@ -133,4 +133,28 @@ public class TutorController {
 
         return ratingService.getReviews(tutorId);
     }
+
+
+
+    @RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = {"multipart/form-data"})
+    public User editProfile(@RequestPart("updatedTutor") Tutor updatedTutor, @RequestPart(value = "image", required = false) MultipartFile image, HttpServletRequest request) {
+
+        String username = (String) request.getSession().getAttribute("User");
+        User user = userRepository.findByUsername(username);
+
+        String imagePath = tutorService.saveImage(image, user.getId());
+
+        Tutor tutor = user.getTutor();
+        tutor.setImage(imagePath);
+        tutor.setName(updatedTutor.getName());
+        tutor.setLocation(updatedTutor.getLocation());
+        tutor.setPhone(updatedTutor.getPhone());
+        tutorRepository.save(tutor);
+
+        user.setTutor(tutor);
+        userRepository.save(user);
+
+        return user;
+    }
 }
+

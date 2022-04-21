@@ -31,7 +31,7 @@ export const EditTutorProfileForm = (props) => {
         const jsonData = JSON.stringify({name, location, phone, grades, subjects, "min_wage": wage});
         const formData = new FormData();
         formData.append("image", image);
-        formData.append("tutor", new Blob([jsonData], {type: 'application/json'}));
+        formData.append("updatedTutor", new Blob([jsonData], {type: 'application/json'}));
 
         handleClose();
         const res = await fetch(`http://localhost:8080/tutor/edit`, {
@@ -88,7 +88,7 @@ export const EditTutorProfileForm = (props) => {
                     </Grid>
                 </Grid>
                 <div className="d-inline-flex mx-auto mt-3">
-                    <button className="button" type="submit">Save Edits</button>
+                    <button className="button" type="submit">Save</button>
                     <button className="button" type="button" onClick={handleClose}>Cancel</button>
                 </div>
             </form>
