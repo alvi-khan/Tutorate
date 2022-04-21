@@ -1,0 +1,24 @@
+.editProfileButton {
+    width: fit-content;
+    height: 40px;
+    border-radius: 10px;
+    background-color: #5EBCD7;
+    font-size: 15px;
+    font-weight: 600;
+    color: white;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 5px;
+}
+
+.editProfileButton:hover {
+    background-color: #92CFE0;
+}
+
+.editProfileButton .icon {
+    background: none;
+    margin-right: 10px;
+    font-size: 18px;
+}

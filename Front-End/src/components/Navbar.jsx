@@ -1,16 +1,38 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
 
 import { Search } from './searchBar/Search';
 import { ProfileBar } from './ProfileBar';
+import '../stylesheets/EditProfileButton.css';
+import {useStateContext} from "../contexts/StateContextProvider";
+import {EditTutorProfileForm} from "./EditTutorProfileForm";
 
 export const Navbar = () => {
+    const {user} = useStateContext();
     const location = useLocation();
+    const [formShown, setFormShown] = useState(false);
+
     const getSearchBar = () => {
         if (location.pathname === "/")
             return <Search/>
         else    return <React.Fragment/>
     }
+
+    const getEditProfileButton = () => {
+        if(user.tutor !== null && user.tutor !== undefined && location.pathname === "/" + user.tutor.id) {
+            return (
+                <div>
+                    <button
+                        className="editProfileButton"
+                        onClick={() => {setFormShown(true)}}>
+                        <i className="icon bi bi-pencil-square"></i>
+                        Edit Profile
+                    </button>
+                    <EditTutorProfileForm show={formShown} onHide={() => setFormShown(false)}/>
+                </div>);
+        }
+    }
+
     return (
         <div className="py-4 pl-4 pr-5 mx-2 flex sm:justify-between border-b border-gray-200 ">
             <Link className="my-auto" to="/">
@@ -20,7 +42,10 @@ export const Navbar = () => {
                 </p>
             </Link>
             {getSearchBar()}
-            <ProfileBar/>
+            <div className="d-inline-flex">
+                {getEditProfileButton()}
+                <ProfileBar/>
+            </div>
         </div>
     );
 }

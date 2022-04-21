@@ -1,12 +1,12 @@
 .profileBar {
-    width: 95px;
+    width: fit-content;
     height: 40px;
     border-radius: 10px;
     background-color: #5EBCD7;
     font-size: 15px;
     font-weight: 600;
     color: white;
-    padding: 0px;
+    padding: 10px;
     display: flex;
     align-items: center;
     justify-content: center;

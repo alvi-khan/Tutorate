@@ -21,6 +21,7 @@ export const ProfileBar = () => {
         });
         setUser({});
         localStorage.removeItem('user');
+        history.push("/");
     }
 
     if (user.username === undefined) {
@@ -66,6 +67,13 @@ export const ProfileBar = () => {
                         onClick={() => {history.push("/" + user.tutor.id);}}>
                         <i className="icon bi bi-person-circle" />
                         View Tutor Profile
+                    </Dropdown.Item>
+                    <Dropdown.Item
+                        hidden={user.username === undefined}
+                        className="dropdown-item"
+                        onClick={() => {history.push("/chats");}}>
+                        <i className="icon bi bi-person-circle" />
+                        View Messages
                     </Dropdown.Item>
                     <Dropdown.Item
                         className="dropdown-item"
