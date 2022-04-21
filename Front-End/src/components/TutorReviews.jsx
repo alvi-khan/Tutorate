@@ -36,7 +36,7 @@ export const Reviews = (props) => {
                                 <p className="mb-2 fs-5">{review.user.username}</p>
                                 <Rating value={review.rating} precision={0.2} key={index} readOnly/>
                                 <br/>
-                                <p className="mb-2">{review.review}</p>
+                                <p className="fs-7 mb-2">{review.review}</p>
                             </div>
                         </div>
                     </div>
