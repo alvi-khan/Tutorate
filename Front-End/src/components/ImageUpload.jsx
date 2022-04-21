@@ -31,6 +31,18 @@ export const ImageUpload = (props) => {
             }
         }
     }
+
+    const fileUpload = (event) => {
+        if (event.target.files && event.target.files[0]) {
+            let file = event.target.files[0];
+            if (file.type.startsWith("image/")) {
+                props.setImage(file);
+                setImageLink(URL.createObjectURL(file));
+                event.target.value = null;
+            }
+        }
+    }
+
     const getContent = () => {
         if (overlayVisible) {
             return (
@@ -56,8 +68,7 @@ export const ImageUpload = (props) => {
         }
         return <img src={imageLink} className="mx-auto img-fluid rounded-circle border-2" style={{width: 150, height: 150, padding: 0, pointerEvents: "none"}}/>
     }
-    const fileUpload = () => {
-    }
+
     return (
         <div
             onDragOver={(event) => handleDragOver(event)}
