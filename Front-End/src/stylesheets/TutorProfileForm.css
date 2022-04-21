@@ -27,13 +27,15 @@
 
 .TutorProfileForm .optionsContainer {
     width: 700px;
-    height: 460px;
     margin: auto;
-    padding: 0px 70px 70px 70px;
+    padding: 0px 70px 0 70px;
+    margin-bottom: 70px;
     justify-content: center;
     align-items: center;
     display: grid;
     border-radius: 10px;
+    overflow-y: scroll;
+    max-height: 390px;
 }
 
 .TutorProfileForm .button {
