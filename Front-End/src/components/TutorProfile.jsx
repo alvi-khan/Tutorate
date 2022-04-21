@@ -5,7 +5,7 @@ import {RateForm} from "./RateForm";
 import "../stylesheets/TutorProfile.css";
 import {useStateContext} from "../contexts/StateContextProvider";
 import {ProfileDialog} from "./ProfileDialog";
-import {Chip, Rating} from "@mui/material";
+import {Chip, Grid, Rating} from "@mui/material";
 import {Reviews} from "./TutorReviews";
 
 export const TutorProfile = () => {
@@ -70,63 +70,76 @@ export const TutorProfile = () => {
     }
 
     return (
-        <div key={id} className="mt-10 container TutorProfile">
-            <div className="row">
-                <div className="card ml-10 col-xl-6 bg-transparent border-0">
-                    <div className="card-body bg-white">
-                        <div className="row">
-                            <div className="col">
-                                <div className="row">
-                                    <img src={tutor.image === null ? "./profile.png" : "http://localhost:8080" + tutor.image}
-                                    className="img-fluid rounded-circle mb-2" width="128" height="128" alt=""/>
-                                </div>
-                            </div>
-                            <div className="col">
-                                <div className="row">
-                                    <h4 className="mb-1 fw-bold fs-3">{tutor.name}</h4>
-                                    <div className="col">
-                                        <Rating className="mt-2" key={tutor.id} value={tutor.averageRating} readOnly precision={0.2} style={{fontSize: 30}}/>
-                                    </div>
-                                    <div className="col">
-                                        <h6 className="ratingCount">{tutor.ratingCount} ratings</h6>
-                                    </div>
-                                    <Link to="/">
-                                        <p className="mb-2 mt-2" onClick={() => {
-                                            setSearchTerm(tutor.location);
-                                            setSearchParams({...defaultParams});
-                                        }}><i className="bi bi-geo-alt"/>&nbsp;{tutor.location}</p>
+        <Grid container className="mt-10 container TutorProfile">
+            <Grid item xs={6} className="card ml-10 bg-transparent border-0">
+                <Grid container>
+                    <Grid item xs={12} className="card-body bg-white">
+                        <Grid container spacing={1}>
+                            <Grid item xs={12}>
+                                <Grid container>
+                                    <Grid item xs={4} className="p-3">
+                                        <img src={tutor.image === null ? "./profile.png" : "http://localhost:8080" + tutor.image}
+                                             className="img-fluid rounded-circle" alt=""/>
+                                    </Grid>
+                                    <Grid item xs={8} className="pl-5">
+                                        <Grid container>
+                                            <Grid item xs={12}>
+                                                <h4 className="mb-1 fw-bold fs-3">{tutor.name}</h4>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <Grid container alignItems="center" justifyContent="center">
+                                                    <Grid item xs={5}>
+                                                        <Rating className="mt-2" key={tutor.id} value={tutor.averageRating} readOnly precision={0.2} style={{fontSize: 30}}/>
+                                                    </Grid>
+                                                    <Grid item xs={7}>
+                                                        <h6 className="ratingCount">{tutor.ratingCount} ratings</h6>
+                                                    </Grid>
+                                                </Grid>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <p className="mb-2 mt-2" onClick={() => {
+                                                    setSearchTerm(tutor.location);
+                                                    setSearchParams({...defaultParams});
+                                                }}><i className="bi bi-geo-alt"/>&nbsp;{tutor.location}</p>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <p className="mb-2"><i className="bi bi-telephone"/>&nbsp;{tutor.phone}</p>
+                                            </Grid>
+                                            <Grid item xs={12}>
+                                                <p className="mb-2"><i className="bi bi-cash-stack"/>&nbsp;BDT {tutor.min_wage}</p>
+                                            </Grid>
+                                        </Grid>
+                                    </Grid>
+                                </Grid>
+                            </Grid>
+                            <Grid item xs={12}>
+                                {tutor.subjects?.map((subject) => {
+                                    return <Link to="/">
+                                        <Chip className="m-1" label={subject} onClick={() => {
+                                            setSearchParams({...defaultParams, subjects: [subject]})
+                                        }}/>
                                     </Link>
-                                    <p className="mb-2"><i className="bi bi-telephone"/>&nbsp;{tutor.phone}</p>
-                                    <p className="mb-2"><i className="bi bi-cash-stack"/>&nbsp;BDT {tutor.min_wage}</p>
-                                </div>
-                            </div>
-                            <div className="col"></div>
-                        </div>
-                        <div className="col">
-                            {tutor.grades?.map((grade) => {
-                                return <Link to="/">
-                                    <Chip className="m-1" label={grade} onClick={() => {
-                                        setSearchParams({...defaultParams, grades: [grade]});
-                                    }}/>
-                                </Link>
-                            })}
-                        </div>
-                        <div className="col">
-                        {tutor.subjects?.map((subject) => {
-                            return <Link to="/">
-                                <Chip className="m-1" label={subject} onClick={() => {
-                                    setSearchParams({...defaultParams, subjects: [subject]})
-                                }}/>
-                            </Link>
-                        })}
-                        </div>
-                    </div>
-                    <div className="d-flex justify-content-center">
+                                })}
+                            </Grid>
+                            <Grid item xs={12}>
+                                {tutor.grades?.map((grade) => {
+                                    return <Link to="/">
+                                        <Chip className="m-1" label={grade} onClick={() => {
+                                            setSearchParams({...defaultParams, grades: [grade]});
+                                        }}/>
+                                    </Link>
+                                })}
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={12} className="d-flex justify-content-center">
                         {getButton()}
-                    </div>
-                </div>
+                    </Grid>
+                </Grid>
+            </Grid>
+            <Grid item xs={6}>
                 <Reviews refetch={refetch} id={id}/>
-            </div>
-        </div>
+            </Grid>
+        </Grid>
     );
 }
