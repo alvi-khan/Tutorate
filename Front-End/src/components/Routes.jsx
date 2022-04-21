@@ -1,20 +1,28 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import {Switch, Route, Redirect} from 'react-router-dom';
 
 import { Results } from './Results';
 import { TutorProfile } from "./TutorProfile";
 import { ChatRoom } from "./chat/ChatRoom"
-export const Routes = () => (
-  <Switch>
-    <Route exact path="/">
-      <Results />
-    </Route>
-    <Route exact path="/chats">
-        <ChatRoom />
-    </Route>
-      <Route path="/:id">
-          <TutorProfile />
-      </Route>
-    
-  </Switch>
-);
+import {useStateContext} from "../contexts/StateContextProvider";
+export const Routes = () => {
+    const {user} = useStateContext();
+    return (
+        <Switch>
+            <Route exact path="/">
+                <Results/>
+            </Route>
+            <Route exact path="/chats">
+                {user.username !== undefined ?
+                    <ChatRoom/>
+                    :
+                    <Redirect to={{ pathname: '/' }} />
+                }
+            </Route>
+            <Route path="/:id">
+                <TutorProfile/>
+            </Route>
+
+        </Switch>
+    );
+}
