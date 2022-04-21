@@ -20,22 +20,35 @@ export const Reviews = (props) => {
         await getReviews();
     }, [props.refetch])
 
+    const reviewList = () => {
+        if (reviews.length == 0)
+            return (
+                <p className="fs-2 mx-auto align-self-center text-center text-gray-400" style={{maxWidth: 350}}>
+                    This tutor does not have any reviews yet.
+                </p>
+            );
+        else
+            return (
+                reviews?.map((review, index) => (
+                    <div className="container w-100">
+                        <div className="card mt-3 bg-transparent border-0">
+                            <div className="card-body bg-white">
+                                <p className="mb-2 fw-bold fs-4">Review# {review.user.id}</p>
+                                <Rating value={review.rating} precision={0.2} key={index} readOnly/>
+                                <br/>
+                                <p className="mb-2">{review.review}</p>
+                            </div>
+                        </div>
+                    </div>
+                ))
+            );
+    }
+
     return (
         <div className="ml-5 p-0 col-xl-8 flex flex-wrap"
              style={{maxHeight: window.innerHeight * 0.75, overflowY: "scroll", overflowX: "hidden"}}>
             <React.Fragment>
-                {reviews?.map((review, index) => (
-                <div className="container w-100">
-                    <div className="card mt-3 bg-transparent border-0">
-                        <div className="card-body bg-white">
-                            <p className="mb-2 fw-bold fs-4">Review# {review.user.id}</p>
-                            <Rating value={review.rating} precision={0.2} key={index} readOnly/>
-                            <br/>
-                            <p className="mb-2">{review.review}</p>
-                        </div>
-                    </div>
-                </div>
-                    ))}
+                {reviewList()}
             </React.Fragment>
         </div>
     );
