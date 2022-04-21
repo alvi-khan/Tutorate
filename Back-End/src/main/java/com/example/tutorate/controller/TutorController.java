@@ -49,6 +49,27 @@ public class TutorController {
     public List<Tutor> getTutors(@RequestParam("searchTerm") String searchTerm, @RequestBody SearchParams searchParams, HttpServletRequest request) {
         return tutorService.getTutors(searchTerm, searchParams);
     }
+    
+    @PostMapping("/update")
+    public Tutor updatetutor(@RequestBody Tutor tutor , HttpServletRequest request) {
+        HttpSession session=request.getSession();
+        User user=userRepository.findByUsername((String) session.getAttribute("User"));
+        Tutor updateTutor = user.getTutor();
+        updateTutor.setName(tutor.getName());
+        updateTutor.setLocation(tutor.getLocation());
+        updateTutor.setPhone(tutor.getPhone());
+        tutorRepository.save(updateTutor);
+        return updateTutor;
+    }
+    
+    @DeleteMapping("/delete")
+    public void deleteTutor(@RequestBody Tutor tutor , HttpServletRequest request){
+        HttpSession session=request.getSession();
+        User user=userRepository.findByUsername((String) session.getAttribute("User"));
+        Tutor deleteTutor = user.getTutor();
+        int id = deleteTutor.getId();
+        tutorService.deleteById(id);
+    }
 
     /*Get homepage showing all the tutors available, from this information we choose which
     info to show in front end(clickable links)

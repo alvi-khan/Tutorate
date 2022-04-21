@@ -13,4 +13,5 @@ public interface TutorService {
     Tutor getTutorByName(String name);
     String saveImage(MultipartFile image, int useID);
     boolean sessionCheck(HttpServletRequest request);
+    Integer deleteById(int id);
 }
