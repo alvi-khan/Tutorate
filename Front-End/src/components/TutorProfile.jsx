@@ -138,7 +138,6 @@ export const TutorProfile = () => {
                 </Grid>
             </Grid>
             <Grid item xs={7}>
-                <p className="px-5 py-2 fs-3" style={{fontWeight: 600}}>Reviews</p>
                 <Reviews refetch={refetch} id={id}/>
             </Grid>
         </Grid>
