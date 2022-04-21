@@ -150,6 +150,8 @@ public class TutorController {
         tutor.setLocation(updatedTutor.getLocation());
         tutor.setPhone(updatedTutor.getPhone());
         tutor.setMin_wage(updatedTutor.getMin_wage());
+        tutor.setGrades(updatedTutor.getGrades());
+        tutor.setSubjects(updatedTutor.getSubjects());
         tutorRepository.save(tutor);
 
         user.setTutor(tutor);

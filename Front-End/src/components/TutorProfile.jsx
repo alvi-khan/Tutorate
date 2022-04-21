@@ -52,14 +52,14 @@ export const TutorProfile = () => {
         else if (tutor.username) {
             return (
                 <React.Fragment>
-                    <button className="button mx-auto mt-4" type="submit"
+                    <button className="button mt-4" type="submit"
                             onClick={() => {setFormShown(true)}}>
-                        <i className="icon bi bi-pencil-square" />
+                        <i className="icon bi bi-pencil mr-1" />
                         &nbsp;Write a Review
                     </button>
                     <Link to={{pathname: "/chats", state: {receiver: tutor.username}}}>
-                        <button className="button mx-auto mt-4" type="submit">
-                            <i className="icon bi bi-pencil-square" />
+                        <button className="button mt-4" type="submit">
+                            <i className="icon bi bi-chat-dots mr-1" />
                             &nbsp;Send Message
                         </button>
                     </Link>
@@ -72,26 +72,40 @@ export const TutorProfile = () => {
     return (
         <div key={id} className="mt-10 container TutorProfile">
             <div className="row">
-                <div className="card ml-10 col-xl-3 bg-transparent border-0">
+                <div className="card ml-10 col-xl-6 bg-transparent border-0">
                     <div className="card-body bg-white">
-                        <img src={tutor.image === null ? "./profile.png" : "http://localhost:8080" + tutor.image}
-                             className="mx-auto img-fluid rounded-circle mb-2" width="128" height="128" alt=""/>
-                        <h4 className="mb-3 fw-bold fs-4 text-center">{tutor.name}</h4>
-                        <Rating key={tutor.id} value={tutor.averageRating} readOnly precision={0.2}/>
-                        <Link to="/">
-                            <p className="mb-2" onClick={() => {
-                                setSearchTerm(tutor.location);
-                                setSearchParams({...defaultParams});
-                            }}><i className="bi bi-geo-alt"/>&nbsp;{tutor.location}</p>
-                        </Link>
-                        <p className="mb-2"><i className="bi bi-telephone"/>&nbsp;{tutor.phone}</p>
-                        {tutor.grades?.map((grade) => {
-                            return <Link to="/">
-                                <Chip className="m-1" label={grade} onClick={() => {
-                                    setSearchParams({...defaultParams, grades: [grade]});
-                                }}/>
-                            </Link>
-                        })}
+                        <div className="row">
+                            <div className="col">
+                                <div className="row">
+                                    <img src={tutor.image === null ? "./profile.png" : "http://localhost:8080" + tutor.image}
+                                    className="img-fluid rounded-circle mb-2" width="128" height="128" alt=""/>
+                                </div>
+                            </div>
+                            <div className="col">
+                                <div className="row">
+                                    <h4 className="mb-1 fw-bold fs-3">{tutor.name}</h4>
+                                    <Rating className="mt-2" key={tutor.id} value={tutor.averageRating} readOnly precision={0.2} style={{fontSize: 30}}/>
+                                    <Link to="/">
+                                        <p className="mb-2 mt-2" onClick={() => {
+                                            setSearchTerm(tutor.location);
+                                            setSearchParams({...defaultParams});
+                                        }}><i className="bi bi-geo-alt"/>&nbsp;{tutor.location}</p>
+                                    </Link>
+                                    <p className="mb-2"><i className="bi bi-telephone"/>&nbsp;{tutor.phone}</p>
+                                    <p className="mb-2"><i className="bi bi-cash-stack"/>&nbsp;BDT {tutor.min_wage}</p>
+                                </div>
+                            </div>
+                            <div className="col"></div>
+                        </div>
+                        <div className="col">
+                            {tutor.grades?.map((grade) => {
+                                return <Link to="/">
+                                    <Chip className="m-1" label={grade} onClick={() => {
+                                        setSearchParams({...defaultParams, grades: [grade]});
+                                    }}/>
+                                </Link>
+                            })}
+                        </div>
                         {tutor.subjects?.map((subject) => {
                             return <Link to="/">
                                 <Chip className="m-1" label={subject} onClick={() => {
@@ -99,9 +113,8 @@ export const TutorProfile = () => {
                                 }}/>
                             </Link>
                         })}
-                        <p className="mb-2"><i className="bi bi-cash-stack"/>&nbsp;BDT {tutor.min_wage}</p>
                     </div>
-                    <div className="d-inline-flex">
+                    <div className="d-flex justify-content-center">
                         {getButton()}
                     </div>
                 </div>

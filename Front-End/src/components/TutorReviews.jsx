@@ -45,7 +45,7 @@ export const Reviews = (props) => {
     }
 
     return (
-        <div className="ml-5 p-0 col-xl-8 flex flex-wrap"
+        <div className="ml-5 p-0 col-xl-5 flex flex-wrap"
              style={{maxHeight: window.innerHeight * 0.75, overflowY: "scroll", overflowX: "hidden"}}>
             <React.Fragment>
                 {reviewList()}

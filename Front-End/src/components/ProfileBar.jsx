@@ -65,14 +65,14 @@ export const ProfileBar = () => {
                         hidden={user.role === 'user'}
                         className="dropdown-item"
                         onClick={() => {history.push("/" + user.tutor.id);}}>
-                        <i className="icon bi bi-person-circle" />
+                        <i className="icon bi bi-person-badge" />
                         View Tutor Profile
                     </Dropdown.Item>
                     <Dropdown.Item
                         hidden={user.username === undefined}
                         className="dropdown-item"
                         onClick={() => {history.push("/chats");}}>
-                        <i className="icon bi bi-person-circle" />
+                        <i className="icon bi bi-chat-square-text" />
                         View Messages
                     </Dropdown.Item>
                     <Dropdown.Item

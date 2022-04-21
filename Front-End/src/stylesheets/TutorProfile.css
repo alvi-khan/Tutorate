@@ -1,17 +1,19 @@
 .TutorProfile .button {
-    background-color: rgb(191 219 254);
-    padding: 10px 30px;
+    background-color: #5EBCD7;
+    color: white;
+    padding: 12px 25px;
     width: fit-content;
-    margin: 5px;
+    margin: 10px;
     border-radius: 8px;
     font-size: 15px;
 }
 
 .TutorProfile .button:hover {
-    background-color: rgb(96 165 250);
+    background-color: #92CFE0;
 }
 
 .TutorProfile .card-body {
-    border: 2px solid #1f252d;
+    border: 2px solid #E9EBEC;
     border-radius: 10px;
+    padding: 30px;
 }

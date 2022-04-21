@@ -7,7 +7,7 @@
     margin: auto;
     width: fit-content;
     height: fit-content;
-    border: 2px solid #1f252d;
+    border: 2px solid #DBE0E1;
     border-radius: 10px;
     background-color: #fafafa;
 }
@@ -36,15 +36,16 @@
 }
 
 .RateForm .button {
-    background-color: rgb(191 219 254);
-    padding: 10px 30px;
+    background-color: #5EBCD7;
+    color: white;
+    padding: 12px 30px;
     width: fit-content;
-    margin: 5px;
+    margin: 10px;
     border-radius: 8px;
 }
 
 .RateForm .button:hover {
-    background-color: rgb(96 165 250);
+    background-color: #92CFE0;
 }
 
 .RateForm fieldset legend{
