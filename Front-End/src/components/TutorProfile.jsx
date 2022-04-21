@@ -88,10 +88,10 @@ export const TutorProfile = () => {
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <Grid container alignItems="center" justifyContent="center">
-                                                    <Grid item xs={5}>
+                                                    <Grid item xs={6}>
                                                         <Rating className="mt-2" key={tutor.id} value={tutor.averageRating} readOnly precision={0.2} style={{fontSize: 30}}/>
                                                     </Grid>
-                                                    <Grid item xs={7}>
+                                                    <Grid item xs={6}>
                                                         <h6 className="ratingCount">{tutor.ratingCount} ratings</h6>
                                                     </Grid>
                                                 </Grid>
@@ -138,6 +138,7 @@ export const TutorProfile = () => {
                 </Grid>
             </Grid>
             <Grid item xs={6}>
+                <p className="px-5 py-2 fs-3" style={{fontWeight: 600}}>Reviews</p>
                 <Reviews refetch={refetch} id={id}/>
             </Grid>
         </Grid>
