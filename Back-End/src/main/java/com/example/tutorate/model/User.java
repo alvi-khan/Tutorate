@@ -1,9 +1,6 @@
 package com.example.tutorate.model;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 public class User {
@@ -16,7 +13,6 @@ public class User {
     private Role role;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name="tutor_id")
-    @JsonBackReference
     private Tutor tutor;
 
 
