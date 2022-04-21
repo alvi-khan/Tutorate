@@ -32,8 +32,8 @@ export const Reviews = (props) => {
                 reviews?.map((review, index) => (
                     <div className="container w-100">
                         <div className="card mt-3 bg-transparent border-0">
-                            <div className="card-body bg-white">
-                                <p className="mb-2 fw-bold fs-4">Review# {review.user.id}</p>
+                            <div className="card-body bg-white py-3 px-4">
+                                <p className="mb-2 fs-5">Review# {review.user.id}</p>
                                 <Rating value={review.rating} precision={0.2} key={index} readOnly/>
                                 <br/>
                                 <p className="mb-2">{review.review}</p>

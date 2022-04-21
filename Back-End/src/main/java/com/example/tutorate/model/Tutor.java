@@ -20,6 +20,7 @@ public class Tutor {
     private List<String> subjects = new ArrayList<>();
     private int min_wage;
     private String image;
+    private int ratingCount;
 
     public String getUsername() {
         return username;
@@ -37,10 +38,20 @@ public class Tutor {
         this.image = image;
     }
     
-    public Tutor() {}
+    public Tutor() {
+        ratingCount = 0;
+    }
 
     public int getId() {
         return id;
+    }
+
+    public int getRatingCount() {
+        return ratingCount;
+    }
+
+    public void setRatingCount(int ratingCount) {
+        this.ratingCount = ratingCount;
     }
 
     public void setId(int id) {

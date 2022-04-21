@@ -42,7 +42,7 @@ export const TutorProfile = () => {
                 <React.Fragment>
                     <button className="button mx-auto mt-4" type="submit"
                             onClick={() => {setProfileDialogShow(true)}}>
-                        <i className="icon bi bi-person-circle" />
+                        <i className="icon bi bi-person-fill mr-1" />
                         &nbsp;Login to Review
                     </button>
                     <ProfileDialog show={profileDialogShow} onHide={() => {setProfileDialogShow(false)}}/>
@@ -84,7 +84,12 @@ export const TutorProfile = () => {
                             <div className="col">
                                 <div className="row">
                                     <h4 className="mb-1 fw-bold fs-3">{tutor.name}</h4>
-                                    <Rating className="mt-2" key={tutor.id} value={tutor.averageRating} readOnly precision={0.2} style={{fontSize: 30}}/>
+                                    <div className="col">
+                                        <Rating className="mt-2" key={tutor.id} value={tutor.averageRating} readOnly precision={0.2} style={{fontSize: 30}}/>
+                                    </div>
+                                    <div className="col">
+                                        <h6 className="ratingCount">{tutor.ratingCount} ratings</h6>
+                                    </div>
                                     <Link to="/">
                                         <p className="mb-2 mt-2" onClick={() => {
                                             setSearchTerm(tutor.location);
@@ -106,6 +111,7 @@ export const TutorProfile = () => {
                                 </Link>
                             })}
                         </div>
+                        <div className="col">
                         {tutor.subjects?.map((subject) => {
                             return <Link to="/">
                                 <Chip className="m-1" label={subject} onClick={() => {
@@ -113,6 +119,7 @@ export const TutorProfile = () => {
                                 }}/>
                             </Link>
                         })}
+                        </div>
                     </div>
                     <div className="d-flex justify-content-center">
                         {getButton()}
