@@ -2,7 +2,7 @@ import React, {useState} from "react";
 
 export const ImageUpload = (props) => {
     const [overlayVisible, setOverlayVisible] = useState(false);
-    const [imageLink, setImageLink] = useState("");
+    const [imageLink, setImageLink] = useState(props.imageLink);
 
     const handleDragOver = (event) => {
         event.stopPropagation();

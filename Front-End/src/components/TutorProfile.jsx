@@ -95,7 +95,7 @@ export const TutorProfile = () => {
                         })}
                         <p className="mb-2"><i className="bi bi-cash-stack"/>&nbsp;BDT {tutor.min_wage}</p>
                     </div>
-                    {getButton()};
+                    {getButton()}
                 </div>
                 <Reviews refetch={refetch} id={id}/>
             </div>
