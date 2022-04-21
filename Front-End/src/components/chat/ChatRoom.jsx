@@ -6,6 +6,8 @@ import "../../stylesheets/ChatRoom.css";
 import {useStateContext} from "../../contexts/StateContextProvider";
 import {ContactList} from "./ContactList";
 import {useLocation} from "react-router-dom";
+import TextField from "@mui/material/TextField";
+import {Avatar} from "@mui/material";
 
 var stompClient = null;
 export const ChatRoom = () => {
@@ -115,20 +117,25 @@ export const ChatRoom = () => {
 
     return (
         <div className="chat-box">
-            <ContactList contacts={[ ...messages.keys()]} selectContact={setReceiver}/>
-            {receiver !== "" && messages.get(receiver) && <div className="chat-content">
-                <ul className="chat-messages">
-                    {[...messages.get(receiver)].map((chat,index)=>(
-                        <li className={`message ${chat.senderName === user.username && "self"}`} key={index}>
-                            {chat.senderName !== user.username && <div className="avatar">{chat.senderName}</div>}
-                            <div className="message-data">{chat.message}</div>
-                            {chat.senderName === user.username && <div className="avatar self">{chat.senderName}</div>}
-                        </li>
-                    ))}
-                </ul>
+            <ContactList contacts={[ ...messages.keys()]} currentContact={receiver} selectContact={setReceiver}/>
+            {receiver !== "" && messages.get(receiver) &&
+                <div className="flex-grow chat-content">
+                    <ul className="flex-grow chat-messages">
+                        {[...messages.get(receiver)].map((chat,index)=>(
+                            <li className={`message ${chat.senderName === user.username && "self"}`} key={index}>
+                                {chat.senderName !== user.username &&
+                                    <Avatar>{chat.senderName[0]}</Avatar>
+                                }
+                                <div className="message-data">{chat.message}</div>
+                            </li>
+                        ))}
+                    </ul>
                 <div className="send-message">
-                    <input type="text" className="input-message" placeholder="enter the message" value={input} onChange={handleMessage} />
-                    <button type="button" className="send-button" onClick={sendMessage}>send</button>
+                    <TextField placeholder="Type a message..." fullWidth value={input} onChange={handleMessage}
+                    onKeyPress={(e) => {if (e.key === 'Enter') {sendMessage()}}}/>
+                    <button type="button" className="send-button" onClick={sendMessage}>
+                        <i className="bi bi-send"/>
+                    </button>
                 </div>
             </div>}
         </div>
