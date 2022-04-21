@@ -39,7 +39,7 @@ public class TutorController {
 
         String imagePath = tutorService.saveImage(image, user.getId());
         tutor.setImage(imagePath);
-
+        tutor.setUsername(user.getUsername());
         user.setTutor(tutor);
         userRepository.save(user);
         return user;

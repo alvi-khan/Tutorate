@@ -1,7 +1,5 @@
 package com.example.tutorate.model;
 
-import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +9,7 @@ public class Tutor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    private String username;
     private String name;
     private float averageRating;
     private String location;
@@ -21,16 +20,13 @@ public class Tutor {
     private List<String> subjects = new ArrayList<>();
     private int min_wage;
     private String image;
-    @OneToOne(mappedBy = "tutor")
-    @JsonManagedReference
-    private User user;
 
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getImage() {

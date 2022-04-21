@@ -49,7 +49,7 @@ export const TutorProfile = () => {
                 </React.Fragment>
             );
         }
-        else if (tutor.user) {
+        else if (tutor.username) {
             return (
                 <React.Fragment>
                     <button className="button mx-auto mt-4" type="submit"
@@ -57,7 +57,7 @@ export const TutorProfile = () => {
                         <i className="icon bi bi-pencil-square" />
                         &nbsp;Write a Review
                     </button>
-                    <Link to={{pathname: "/chats", state: {receiver: tutor.user.username}}}>
+                    <Link to={{pathname: "/chats", state: {receiver: tutor.username}}}>
                         <button className="button mx-auto mt-4" type="submit">
                             <i className="icon bi bi-pencil-square" />
                             &nbsp;Send Message
