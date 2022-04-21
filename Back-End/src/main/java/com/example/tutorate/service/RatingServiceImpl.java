@@ -49,7 +49,8 @@ public class RatingServiceImpl implements RatingService{
             ratingRepository.save(tutorRating);
 
             tutor.setAverageRating(calculateAverageRating(tutorId));
-            tutor.setRatingCount(tutor.getRatingCount() + 1);
+            int count = ratingRepository.getRatingCount(tutorId);
+            tutor.setRatingCount(count);
             tutorRepository.save(tutor);
         }
     }

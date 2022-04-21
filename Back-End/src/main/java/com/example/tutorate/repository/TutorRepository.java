@@ -26,6 +26,4 @@ public interface TutorRepository extends JpaRepository<Tutor, Integer> {
 
     public List<Tutor> findAllByOrderByAverageRatingDesc();
 
-
-
 }

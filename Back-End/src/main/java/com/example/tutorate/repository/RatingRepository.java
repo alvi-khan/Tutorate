@@ -17,5 +17,8 @@ import java.util.List;
         @Query(value = "SELECT * from tutor_rating where fk_tutor = :id AND review != ''", nativeQuery = true)
         List<TutorRating> getReviewsById(int id);
 
+        @Query(value = "SELECT count(fk_user) from tutor_rating where fk_tutor = :id", nativeQuery = true)
+        int getRatingCount(int id);
+
     }
 
