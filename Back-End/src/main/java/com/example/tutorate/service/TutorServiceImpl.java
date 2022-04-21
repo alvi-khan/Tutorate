@@ -29,7 +29,7 @@ public class TutorServiceImpl implements TutorService{
     @Override
     public String saveImage(MultipartFile image, int userID) {
         if (image == null)  return null;
-        String filepath = "/tutorImages/" + userID;
+        String filepath = "/tutorImages/" + userID + System.currentTimeMillis();
         String originalFileName = image.getOriginalFilename();
         String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
         filepath += extension;
