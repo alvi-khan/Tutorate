@@ -21,12 +21,12 @@
     flex-direction: row;
   }
   .chat-box{
-    height: 600px;
     display: flex;
     flex-direction: row;
   }
   
   .chat-content{
+    height: 600px;
     width:80%;
     margin-left: 10px;
   }
