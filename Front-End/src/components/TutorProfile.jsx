@@ -33,7 +33,7 @@ export const TutorProfile = () => {
 
     useEffect(async () => {
         await getTutor();
-    }, [id])
+    }, [id, user])
 
     const getButton = () => {
         if (user.tutor !== undefined && user.tutor !== null && user.tutor.id == id)  return;

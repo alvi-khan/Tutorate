@@ -11,12 +11,12 @@ import {Grades} from "./searchBar/Grades";
 
 export const EditTutorProfileForm = (props) => {
     const {user, setUser} = useStateContext();
-    const [name, setName] = useState();
-    const [phone, setPhone] = useState('');
-    const [location, setLocation] = useState('');
-    const [subjects, setSubjects] = useState([]);
-    const [grades, setGrades] = useState([]);
-    const [wage, setWage] = useState(0);
+    const [name, setName] = useState(user.tutor.name);
+    const [phone, setPhone] = useState(user.tutor.phone);
+    const [location, setLocation] = useState(user.tutor.location);
+    const [subjects, setSubjects] = useState(user.tutor.subjects);
+    const [grades, setGrades] = useState(user.tutor.grades);
+    const [wage, setWage] = useState(user.tutor.min_wage);
     const [image, setImage] = useState(null);
     const history = useHistory();
 
@@ -41,6 +41,7 @@ export const EditTutorProfileForm = (props) => {
         });
         const modifiedUser = await(res.json());
         setUser(modifiedUser);
+        localStorage.setItem('user', JSON.stringify(modifiedUser));
         if (modifiedUser.tutor != null) history.push("/" + modifiedUser.tutor.id);
     }
 
@@ -60,31 +61,31 @@ export const EditTutorProfileForm = (props) => {
                     <Grid item xs={6}>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
-                                <TextField fullWidth required name="name" label="Name" defaultValue={user.tutor.name}
+                                <TextField fullWidth required name="name" label="Name" defaultValue={name}
                                            onChange={(event) => setName(event.target.value)}
                                 />
                             </Grid>
                             <Grid item xs={12}>
-                                <TextField fullWidth name="phone" label="Phone" type="number" defaultValue={user.tutor.phone}
+                                <TextField fullWidth name="phone" label="Phone" type="number" defaultValue={phone}
                                            onChange={(event) => setPhone(event.target.value)}
                                 />
                             </Grid>
                         </Grid>
                     </Grid>
                     <Grid item xs={6} className="d-inline-flex">
-                        <Location allowNewValues={true} onLocationChange={setLocation} defaultLocation={user.tutor.location}/>
+                        <Location allowNewValues={true} onLocationChange={setLocation} defaultLocation={location}/>
                     </Grid>
                     <Grid item xs={6} className="d-inline-flex">
                         <TextField
-                            fullWidth name="wage" label="Wages" type="number" defaultValue={user.tutor.min_wage}
+                            fullWidth name="wage" label="Wages" type="number" defaultValue={wage}
                             onChange={(event) => setWage(event.target.value)}
                         />
                     </Grid>
                     <Grid item xs={6} className="d-inline-flex">
-                        <Subjects required allowNewValues={true} onSubjectChange={setSubjects} subjects={user.tutor.subjects}/>
+                        <Subjects required allowNewValues={true} onSubjectChange={setSubjects} subjects={subjects}/>
                     </Grid>
                     <Grid item xs={6} className="d-inline-flex">
-                        <Grades required allowNewValues={true} grades={user.tutor.grades} onGradeChange={setGrades} />
+                        <Grades required allowNewValues={true} grades={grades} onGradeChange={setGrades} />
                     </Grid>
                 </Grid>
                 <div className="d-inline-flex mx-auto mt-3">

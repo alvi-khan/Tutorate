@@ -145,10 +145,11 @@ public class TutorController {
         String imagePath = tutorService.saveImage(image, user.getId());
 
         Tutor tutor = user.getTutor();
-        tutor.setImage(imagePath);
+        if (imagePath != null)  tutor.setImage(imagePath);
         tutor.setName(updatedTutor.getName());
         tutor.setLocation(updatedTutor.getLocation());
         tutor.setPhone(updatedTutor.getPhone());
+        tutor.setMin_wage(updatedTutor.getMin_wage());
         tutorRepository.save(tutor);
 
         user.setTutor(tutor);
