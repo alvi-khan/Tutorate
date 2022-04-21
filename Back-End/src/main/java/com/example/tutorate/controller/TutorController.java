@@ -53,32 +53,22 @@ public class TutorController {
     @PostMapping("/update")
     public Tutor updatetutor(@RequestBody Tutor tutor , HttpServletRequest request) {
         HttpSession session=request.getSession();
-
         User user=userRepository.findByUsername((String) session.getAttribute("User"));
-        /*int id = (int) request.getSession().getAttribute("Session id");*/
-        //System.out.println(user.getTutor().getId());
-        /*System.out.println(id);*/
-        Tutor updateTutor = tutorRepository.findByName(user.getTutor().getName());
+        Tutor updateTutor = user.getTutor();
         updateTutor.setName(tutor.getName());
         updateTutor.setLocation(tutor.getLocation());
         updateTutor.setPhone(tutor.getPhone());
-        //tutorService.saveTutor(tutor);
         tutorRepository.save(updateTutor);
-        return null;
+        return updateTutor;
     }
     
-     @DeleteMapping("/delete")
-    public ResponseEntity<String> deleteTutor(@RequestBody Tutor tutor , HttpServletRequest request){
+    @DeleteMapping("/delete")
+    public void deleteTutor(@RequestBody Tutor tutor , HttpServletRequest request){
         HttpSession session=request.getSession();
-
         User user=userRepository.findByUsername((String) session.getAttribute("User"));
-        Tutor deleteTutor = tutorRepository.findByName(user.getTutor().getName());
+        Tutor deleteTutor = user.getTutor();
         int id = deleteTutor.getId();
-
-        System.out.println(id);
         tutorService.deleteById(id);
-        return null;
-        //TutorServiceImpl.deleteById(deleteTutor.getId());
     }
 
     /*Get homepage showing all the tutors available, from this information we choose which

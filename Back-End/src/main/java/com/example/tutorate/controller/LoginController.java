@@ -55,31 +55,5 @@ public class LoginController {
             return true;
         else    return false;
     }
-    
-    @PostMapping("/update")
-    public User update(@RequestBody User user, HttpServletRequest request) {
-        String username = (String) request.getSession().getAttribute("User");
-        User update = userRepository.findByUsername(username);
-        update.setUsername(user.getUsername());
-        update.setPassword(user.getPassword());
-        update.setRole(user.getRole());
-        //tutorService.saveTutor(tutor);
-        userRepository.save(update);
-        return update;
-    }
-     /*@DeleteMapping("/delete")
-        public ResponseEntity<String> deleteTutor(@RequestBody User user , HttpServletRequest request){
-            HttpSession session=request.getSession();
-
-            User user=userRepository.findByUsername((String) session.getAttribute("User"));
-            Userr deleteUser = tutorRepository.findByName(user.getUserr().getName());
-            int id = deleteUser.getId();
-
-            System.out.println(id);
-            UserService.deleteById(id);
-            return null;
-            //UserServiceImpl.deleteById(deleteUserr.getId());
-       }
-    }*/
 }
  
