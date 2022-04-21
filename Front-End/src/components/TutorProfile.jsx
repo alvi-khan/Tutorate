@@ -71,8 +71,8 @@ export const TutorProfile = () => {
 
     return (
         <Grid container className="mt-10 container TutorProfile">
-            <Grid item xs={6} className="card ml-10 bg-transparent border-0">
-                <Grid container>
+            <Grid item xs={5} className="card ml-10 bg-transparent border-0">
+                <Grid container className="ml-5">
                     <Grid item xs={12} className="card-body bg-white">
                         <Grid container spacing={1}>
                             <Grid item xs={12}>
@@ -88,10 +88,10 @@ export const TutorProfile = () => {
                                             </Grid>
                                             <Grid item xs={12}>
                                                 <Grid container alignItems="center" justifyContent="center">
-                                                    <Grid item xs={6}>
+                                                    <Grid item xs={8}>
                                                         <Rating className="mt-2" key={tutor.id} value={tutor.averageRating} readOnly precision={0.2} style={{fontSize: 30}}/>
                                                     </Grid>
-                                                    <Grid item xs={6}>
+                                                    <Grid item xs={4}>
                                                         <h6 className="ratingCount">{tutor.ratingCount} ratings</h6>
                                                     </Grid>
                                                 </Grid>
@@ -137,7 +137,7 @@ export const TutorProfile = () => {
                     </Grid>
                 </Grid>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={7}>
                 <p className="px-5 py-2 fs-3" style={{fontWeight: 600}}>Reviews</p>
                 <Reviews refetch={refetch} id={id}/>
             </Grid>
