@@ -6,7 +6,7 @@ import md5 from "md5";
 import {useStateContext} from "../contexts/StateContextProvider";
 
 export const ProfileDialog = (props) => {
-    const {user, setUser} = useStateContext();
+    const {setUser} = useStateContext();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [userError, setUserError] = useState('');

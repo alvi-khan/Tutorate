@@ -1,11 +1,10 @@
 import React, {useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
-
 import { Search } from './searchBar/Search';
 import { ProfileBar } from './ProfileBar';
 import '../stylesheets/EditProfileButton.css';
 import {useStateContext} from "../contexts/StateContextProvider";
-import {EditTutorProfileForm} from "./EditTutorProfileForm";
+import {EditTutorProfileForm} from "./tutorProfile/EditTutorProfileForm";
 
 export const Navbar = () => {
     const {user} = useStateContext();

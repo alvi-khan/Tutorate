@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import {Autocomplete, TextField} from "@mui/material";
-import {useStateContext} from "../contexts/StateContextProvider";
 
 export const Location = (props) => {
     const [locations, setLocations] = useState([]);
@@ -13,6 +12,7 @@ export const Location = (props) => {
         });
         setLocations(await res.json());
     }, [])
+
     return <Autocomplete
         defaultValue={props.defaultLocation}
         freeSolo={props.allowNewValues}

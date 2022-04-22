@@ -1,9 +1,9 @@
 import ReactModal from "react-modal";
 import React, {useState} from "react";
-import "../stylesheets/RateForm.css";
+import "../../stylesheets/RateForm.css";
 import Grid from "@mui/material/Grid";
-import {Ranking} from "./searchBar/Ranking";
-import {setRef, TextField} from "@mui/material";
+import {Ranking} from "../searchBar/Ranking";
+import {TextField} from "@mui/material";
 
 
 export const RateForm = (props) => {

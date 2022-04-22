@@ -1,4 +1,3 @@
-import {useState} from "react";
 import {Avatar, List, ListItem, ListItemAvatar, ListItemButton, ListItemText} from "@mui/material";
 
 export const ContactList = (props) => {

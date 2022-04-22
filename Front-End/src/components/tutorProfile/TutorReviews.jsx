@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import {Chip, Rating} from "@mui/material";
+import {Rating} from "@mui/material";
 
 export const Reviews = (props) => {
     const [reviews, setReviews] = useState([]);

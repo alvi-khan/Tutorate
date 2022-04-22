@@ -1,17 +1,17 @@
 import ReactModal from "react-modal";
-import React, {useEffect, useState} from "react";
-import {Subjects} from "./searchBar/Subjects";
-import {Grades} from "./searchBar/Grades";
+import React, {useState} from "react";
+import {Subjects} from "../searchBar/Subjects";
+import {Grades} from "../searchBar/Grades";
 import {Location} from "./Location";
-import "../stylesheets/TutorProfileForm.css";
-import {useStateContext} from "../contexts/StateContextProvider";
+import "../../stylesheets/TutorProfileForm.css";
+import {useStateContext} from "../../contexts/StateContextProvider";
 import Grid from "@mui/material/Grid";
 import TextField from '@mui/material/TextField';
 import {useHistory} from "react-router-dom";
 import {ImageUpload} from "./ImageUpload";
 
 export const TutorProfileForm = (props) => {
-    const {user, setUser} = useStateContext();
+    const {setUser} = useStateContext();
     const [name, setName] = useState('');
     const [phone, setPhone] = useState('');
     const [location, setLocation] = useState('');

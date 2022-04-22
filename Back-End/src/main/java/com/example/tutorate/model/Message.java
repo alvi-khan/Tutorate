@@ -10,19 +10,28 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private  String senderName;
+    private String senderName;
     private String receiverName;
-    private  String message;
+    private String message;
     private Status status;
+
     public Message() {
 
     }
 
-    public Message(String senderName,String receiverName,String message,Status status){
-        this.senderName=senderName;
-        this.receiverName=receiverName;
-        this.message=message;
-        this.status=status;
+    public Message(String senderName, String receiverName, String message, Status status){
+        this.senderName = senderName;
+        this.receiverName = receiverName;
+        this.message = message;
+        this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getSenderName() {

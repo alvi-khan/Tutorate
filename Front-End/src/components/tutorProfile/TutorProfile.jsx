@@ -2,9 +2,9 @@ import React, {useState, useEffect} from 'react';
 import { useParams, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {RateForm} from "./RateForm";
-import "../stylesheets/TutorProfile.css";
-import {useStateContext} from "../contexts/StateContextProvider";
-import {ProfileDialog} from "./ProfileDialog";
+import "../../stylesheets/TutorProfile.css";
+import {useStateContext} from "../../contexts/StateContextProvider";
+import {ProfileDialog} from "../ProfileDialog";
 import {Chip, Grid, Rating} from "@mui/material";
 import {Reviews} from "./TutorReviews";
 
@@ -12,7 +12,6 @@ export const TutorProfile = () => {
     let { id } = useParams();
     const {user, setSearchTerm, setSearchParams, defaultParams} = useStateContext();
     const [tutor, setTutor] = useState({});
-    const [image, setImage] = useState('/profile.png')
     const [formShown, setFormShown] = useState(false);
     const [profileDialogShow, setProfileDialogShow] = useState(false);
     const [refetch, setRefetch] = useState(false);

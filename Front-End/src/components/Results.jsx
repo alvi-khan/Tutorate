@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import {Link, useLocation} from 'react-router-dom';
-
 import { useStateContext } from '../contexts/StateContextProvider';
 import { Loading } from './Loading';
 import {Chip, Rating} from "@mui/material";
@@ -64,7 +63,6 @@ export const Results = () => {
           </div>
         </React.Fragment>
       ))}
-
     </div>
   );
 };

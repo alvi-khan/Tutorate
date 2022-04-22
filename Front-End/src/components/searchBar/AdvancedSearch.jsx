@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import ReactModal from 'react-modal';
 import { Subjects } from './Subjects';
 import { useStateContext } from '../../contexts/StateContextProvider';
@@ -8,7 +8,6 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Ranking} from "./Ranking";
 import {Grades} from "./Grades";
 import Grid from "@mui/material/Grid";
-import TextField from "@mui/material/TextField";
 
 export const AdvancedSearch = (props) => {
   const [subjects, setSubjects] = useState([]);

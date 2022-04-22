@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -28,8 +26,6 @@ public class TutorController {
     private UserRepository userRepository;
     @Autowired
     private TutorRepository tutorRepository;
-    @Autowired
-    private RatingRepository ratingRepository;
 
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     public User add(@RequestPart("tutor") Tutor tutor, @RequestPart(value = "image", required = false) MultipartFile image, HttpServletRequest request) {
@@ -49,59 +45,9 @@ public class TutorController {
     public List<Tutor> getTutors(@RequestParam("searchTerm") String searchTerm, @RequestBody SearchParams searchParams, HttpServletRequest request) {
         return tutorService.getTutors(searchTerm, searchParams);
     }
-    
-    @PostMapping("/update")
-    public Tutor updatetutor(@RequestBody Tutor tutor , HttpServletRequest request) {
-        HttpSession session=request.getSession();
-        User user=userRepository.findByUsername((String) session.getAttribute("User"));
-        Tutor updateTutor = user.getTutor();
-        updateTutor.setName(tutor.getName());
-        updateTutor.setLocation(tutor.getLocation());
-        updateTutor.setPhone(tutor.getPhone());
-        tutorRepository.save(updateTutor);
-        return updateTutor;
-    }
-    
-    @DeleteMapping("/delete")
-    public void deleteTutor(@RequestBody Tutor tutor , HttpServletRequest request){
-        HttpSession session=request.getSession();
-        User user=userRepository.findByUsername((String) session.getAttribute("User"));
-        Tutor deleteTutor = user.getTutor();
-        int id = deleteTutor.getId();
-        tutorService.deleteById(id);
-    }
-
-    /*Get homepage showing all the tutors available, from this information we choose which
-    info to show in front end(clickable links)
-    * */
-    @GetMapping("/home")
-    public List<Tutor>HomePage(HttpServletRequest request){
-        return tutorRepository.findAll();
-    }
-    /*
-    * Provides detail of user logged in
-    * user type can be distinguished according to role of logged user
-    * user can be student type or tutor type
-    * I've used enum to identify role
-    * */
-    @GetMapping("/profile")
-    public Tutor getProfileOfUser(HttpServletRequest request){
-        if(tutorService.sessionCheck(request)==false)
-            return null;
-            HttpSession session=request.getSession();
-            int userId= (int) session.getAttribute("Session id");
-//            int role= (int) session.getAttribute("Session role");
-//            if(role==Role.tutor.ordinal())
-//            {
-//                Tutor user=tutorRepository.findById(userId);
-//                return user;
-//            }
-            return null;
-    }
 
     @GetMapping("/{id}")
         public Tutor getTutorDetail(@PathVariable int id){
-
         return tutorRepository.findById(id);
     }
 
@@ -122,7 +68,6 @@ public class TutorController {
 
     @PostMapping("/rate")
     public float rate(@RequestParam int tutorId, @RequestBody TutorRating rateParams, HttpServletRequest request) {
-
         ratingService.storeRating(tutorId, rateParams, request);
         Tutor tutor = tutorRepository.findById(tutorId);
         return tutor.getAverageRating();
@@ -130,15 +75,11 @@ public class TutorController {
 
     @GetMapping("/review")
     public List<TutorRating> reviews(@RequestParam int tutorId) {
-
         return ratingService.getReviews(tutorId);
     }
 
-
-
     @RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     public User editProfile(@RequestPart("updatedTutor") Tutor updatedTutor, @RequestPart(value = "image", required = false) MultipartFile image, HttpServletRequest request) {
-
         String username = (String) request.getSession().getAttribute("User");
         User user = userRepository.findByUsername(username);
 
@@ -159,6 +100,5 @@ public class TutorController {
 
         return user;
     }
-
 }
 

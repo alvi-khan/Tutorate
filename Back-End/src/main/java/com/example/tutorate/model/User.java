@@ -12,7 +12,7 @@ public class User {
     @Enumerated
     private Role role;
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="tutor_id")
+    @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
 

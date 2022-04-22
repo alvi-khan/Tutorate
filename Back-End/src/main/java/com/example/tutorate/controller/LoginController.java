@@ -29,10 +29,11 @@ public class LoginController {
             session.setAttribute("User", user.getUsername());
             return userRepository.findByUsername(user.getUsername());
         }
-        else  {
+        else {
             User invalid = new User();
             invalid.setPassword("invalid");
-            return invalid; }
+            return invalid;
+        }
     }
 
     @PostMapping("/register")
@@ -41,19 +42,11 @@ public class LoginController {
         session.setAttribute("User", user.getUsername());
         return userService.addNewUser(user);
     }
-
  
     @GetMapping("/logout")
     public void logout (HttpServletRequest request) {
         HttpSession session = request.getSession();
         session.invalidate();
-    }
-
-    @GetMapping("/checkSession")
-    public boolean checkSessionByUsername(String username, HttpServletRequest request){
-        if(request.getSession().getAttribute("User").equals(username))
-            return true;
-        else    return false;
     }
 }
  

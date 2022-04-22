@@ -1,13 +1,13 @@
 import ReactModal from "react-modal";
-import React, {useEffect, useState} from "react";
-import {useStateContext} from "../contexts/StateContextProvider";
+import React, {useState} from "react";
+import {useStateContext} from "../../contexts/StateContextProvider";
 import {useHistory} from "react-router-dom";
 import Grid from "@mui/material/Grid";
 import {ImageUpload} from "./ImageUpload";
 import TextField from "@mui/material/TextField";
 import {Location} from "./Location";
-import {Subjects} from "./searchBar/Subjects";
-import {Grades} from "./searchBar/Grades";
+import {Subjects} from "../searchBar/Subjects";
+import {Grades} from "../searchBar/Grades";
 
 export const EditTutorProfileForm = (props) => {
     const {user, setUser} = useStateContext();

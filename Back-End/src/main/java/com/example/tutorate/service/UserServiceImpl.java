@@ -10,19 +10,6 @@ public class UserServiceImpl implements UserService{
     @Autowired
     UserRepository userRepository;
 
-    @Override
-    public User getUserByName(String username){
-    User searched_user=new User();
-        for(User user:userRepository.findAll()){
-            String tutorName=user.getUsername();
-            if(tutorName.equals(username)){
-                searched_user=user;
-                return searched_user;
-            }
-        }
-        return searched_user;
-    }
-
     public boolean userExists(String username) {
         User user = userRepository.findByUsername(username);
         return user != null;

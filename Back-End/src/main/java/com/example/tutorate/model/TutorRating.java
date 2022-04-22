@@ -1,7 +1,5 @@
 package com.example.tutorate.model;
 
-
-
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -83,8 +81,8 @@ public class TutorRating implements Serializable {
         return rating;
     }
 
-    public void calculateRate(){
-        this.rating = (float)((1 * this.punctuality) + (2 * this.patience) + (3 * this.clarity) + (4 * this.effectiveness)) / 10;
+    public void calculateRate() {
+        this.rating = (float)((this.punctuality) + (2 * this.patience) + (3 * this.clarity) + (4 * this.effectiveness)) / 10;
     }
 
     public void setReview(String review) {

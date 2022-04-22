@@ -4,12 +4,8 @@ import com.example.tutorate.model.SearchParams;
 import com.example.tutorate.model.Tutor;
 import com.example.tutorate.repository.TutorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +14,6 @@ import java.util.List;
 public class TutorServiceImpl implements TutorService{
     @Autowired
     private TutorRepository tutorRepository;
-
-    public TutorServiceImpl() {}
-
-    @Override
-    public Tutor saveTutor(Tutor tutor) {
-        return tutorRepository.save(tutor);
-    }
 
     @Override
     public String saveImage(MultipartFile image, int userID) {
@@ -58,40 +47,5 @@ public class TutorServiceImpl implements TutorService{
                 tutors.add(tutor);
         }
         return tutors;
-    }
-    /*
-    * Checks if any entry in database has name equal to name entered
-    * */
-    @Override
-    public  Tutor getTutorByName(String username){
-        Tutor searched_tutor=new Tutor();
-        searched_tutor.setName("never");
-        for(Tutor tutor:tutorRepository.findAll()){
-            String tutorName=tutor.getName();
-            if(tutorName.equals(username)){
-                searched_tutor=tutor;
-                return searched_tutor;
-            }
-        }
-        return searched_tutor;
-    }
-
-    /*
-    * Check if user is authenticated
-    * */
-
-    @Override
-    public boolean sessionCheck(HttpServletRequest request){
-        HttpSession session =request.getSession();
-        if(session.getAttribute("Session token")==null)
-            return false;
-        if(session.getAttribute("Session token").equals(request.getSession()))
-            return true;
-        else    return false;
-    }
-
-    @Override
-    public Integer deleteById(int id) {
-        return null;
     }
 }

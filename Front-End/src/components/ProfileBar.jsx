@@ -3,7 +3,7 @@ import '../stylesheets/ProfileBar.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import { Dropdown } from 'react-bootstrap';
 import { ProfileDialog } from './ProfileDialog';
-import {TutorProfileForm} from "./TutorProfileForm";
+import {TutorProfileForm} from "./tutorProfile/TutorProfileForm";
 import {useStateContext} from "../contexts/StateContextProvider";
 import { useHistory } from "react-router-dom";
 
