@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "../../stylesheets/ChatRoom.css";
 import {useStateContext} from "../../contexts/StateContextProvider";
 import {ContactList} from "./ContactList";
-import {useLocation} from "react-router-dom";
+import {Link, useLocation} from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import {Avatar} from "@mui/material";
 
@@ -25,6 +25,7 @@ export const ChatRoom = () => {
     const connect = () => {
         let Sock = new SockJS('http://localhost:8080/ws');
         stompClient = over(Sock);
+        stompClient.debug = null;   // disable log messages
         stompClient.connect({}, onConnected, onError);
     }
 
@@ -117,7 +118,33 @@ export const ChatRoom = () => {
 
     return (
         <div className="chat-box">
-            <ContactList contacts={[ ...messages.keys()]} currentContact={receiver} selectContact={setReceiver}/>
+            {messages.size !== 0 &&
+                <ContactList contacts={[ ...messages.keys()]} currentContact={receiver} selectContact={setReceiver}/>
+            }
+
+            {messages.size === 0 &&
+                <div className="flex-grow chat-content">
+                    <div className="default-text">
+                        <i className="bi bi-chat-left-fill"/>
+                        <p>Conversations with tutors will appear here.</p>
+                        <Link to={{pathname: "/"}}>
+                            <button className="button mt-4" type="submit">
+                                <i className="icon bi bi-search mr-1" />
+                                &nbsp;Explore
+                            </button>
+                        </Link>
+                    </div>
+                </div>
+            }
+
+            {messages.size !== 0 && receiver === "" &&
+                <div className="flex-grow chat-content">
+                    <div className="default-text">
+                        <i className="bi bi-chat-left-fill"/>
+                        <p>Select a contact to start viewing messages.</p>
+                    </div>
+                </div>
+            }
             {receiver !== "" && messages.get(receiver) &&
                 <div className="flex-grow chat-content">
                     <ul className="flex-grow chat-messages">

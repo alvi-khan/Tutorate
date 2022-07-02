@@ -47,22 +47,6 @@ INSERT INTO tutor_grades (tutor_id, grades) VALUES
 (8, 'Class 8'),
 (8, 'class 9');
 
-INSERT INTO tutor_rating (fk_tutor, fk_user, clarity, effectiveness, patience, punctuality, rating, review) VALUES
-(1, 2, 3, 4, 5, 5, 4, 'Florence supported our daughter now off to Cornell and he''s now working with my son in his Jr year. We like her method of billing super simple. We have recommended her to many friends.'),
-(1, 3, 5, 5, 5, 5, 5, 'She is absolutely the best tutor and according to my daughter, she conveys the contents very clearly, shares all the secret tips and formulas for effective learning, and 7she''s also very knowledgeable in ALL subjects that she''s teaching.'),
-(1, 4, 4, 4, 4, 4, 4, 'I referred Florence to several parents and they were all pleased with the results in their children''s test scores.  I can''t say enough about her...she is committed and genuinely interested in helping individual students'' needs.'),
-(1, 5, 4, 4, 5, 3, 4.1, 'I highly recommend Florence if you need a coach to help you with your writing!'),
-(1, 6, 5, 3, 4, 4, 3.9, 'She is very patient, kind, and truly cared about my mission and perspective. If you need any help writing, planning, or simply organizing your ideas for an outline, she is your guy! I recommend her without reservation.'),
-(2, 3, 4, 4, 5, 4, 4.2, 'We have been going to her for over 7 years now and she has helped my three daughters achieve success in higher math and enable them to get into great colleges. She teaches math in a way that the kids understand.'),
-(2, 4, 4, 5, 4, 5, 4.5, 'I''ve been working with her for a few years now. She has helped me get into law school, business school, apply for interviews, and even land my #1 choice for an internship. '),
-(2, 5, 3, 4, 4, 3, 3.6, 'My son was feeling overwhelmed and underprepared as he began the daunting task of submitting college admission applications. Thankfully we found Cathy, who provided a sense of confidence as he navigated the process.'),
-(2, 6, 5, 4, 3, 3, 4, 'First of all, I really appreciate Cathy for proofreading my dissertation writings. My adviser is very meticulous and careful to read writings. She always concerns my English to have better expression, correct grammar, and good arguments.'),
-(3, 4, 3, 3, 4, 4, 3.3, 'Ashley is truly one of the greatest tutors I have had the pleasure of working with. She not only teaches her students, but actually takes the time to help them understand whatever subject they need help with.'),
-(3, 5, 3, 4, 4, 4, 3.7, 'I am so happy that I found Ashley at Enrich Your Academics. I have been applying for multiple research and educational grants during this past year, and she has been a tremendous help to me.'),
-(4, 5, 4, 4, 4, 4, 4, ' I have recommended 6 people to him so far, they all got interviews, acceptance and at times even scholarships.'),
-(5, 6, 4, 3, 5, 5, 3.9, 'I am extremely grateful for Derek''s help with my personal statement for law school and cannot recommend him enough.  '),
-(6, 7, 3, 4, 4, 3, 3.6, 'I have never felt comfortable writing personal statements or essays in general. Edmund was recommended to me by a friend and I can honestly say it was the best recommendation anyone has ever given me.');
-
 INSERT INTO tutor_subjects (tutor_id, subjects) VALUES
 (1, 'English'),
 (1, 'Maths'),
@@ -98,6 +82,22 @@ INSERT INTO "user" (id, "password", role, username, tutor_id) VALUES
 (6, '202cb962ac59075b964b07152d234b70', 1, 'edmundMiller', 6),
 (7, '202cb962ac59075b964b07152d234b70', 1, 'marcellaHunter', 7),
 (8, '202cb962ac59075b964b07152d234b70', 1, 'lancePadilla', 8);
+
+INSERT INTO tutor_rating (fk_tutor, fk_user, clarity, effectiveness, patience, punctuality, rating, review) VALUES
+(1, 2, 3, 4, 5, 5, 4, 'Florence supported our daughter now off to Cornell and he''s now working with my son in his Jr year. We like her method of billing super simple. We have recommended her to many friends.'),
+(1, 3, 5, 5, 5, 5, 5, 'She is absolutely the best tutor and according to my daughter, she conveys the contents very clearly, shares all the secret tips and formulas for effective learning, and 7she''s also very knowledgeable in ALL subjects that she''s teaching.'),
+(1, 4, 4, 4, 4, 4, 4, 'I referred Florence to several parents and they were all pleased with the results in their children''s test scores.  I can''t say enough about her...she is committed and genuinely interested in helping individual students'' needs.'),
+(1, 5, 4, 4, 5, 3, 4.1, 'I highly recommend Florence if you need a coach to help you with your writing!'),
+(1, 6, 5, 3, 4, 4, 3.9, 'She is very patient, kind, and truly cared about my mission and perspective. If you need any help writing, planning, or simply organizing your ideas for an outline, she is your guy! I recommend her without reservation.'),
+(2, 3, 4, 4, 5, 4, 4.2, 'We have been going to her for over 7 years now and she has helped my three daughters achieve success in higher math and enable them to get into great colleges. She teaches math in a way that the kids understand.'),
+(2, 4, 4, 5, 4, 5, 4.5, 'I''ve been working with her for a few years now. She has helped me get into law school, business school, apply for interviews, and even land my #1 choice for an internship. '),
+(2, 5, 3, 4, 4, 3, 3.6, 'My son was feeling overwhelmed and underprepared as he began the daunting task of submitting college admission applications. Thankfully we found Cathy, who provided a sense of confidence as he navigated the process.'),
+(2, 6, 5, 4, 3, 3, 4, 'First of all, I really appreciate Cathy for proofreading my dissertation writings. My adviser is very meticulous and careful to read writings. She always concerns my English to have better expression, correct grammar, and good arguments.'),
+(3, 4, 3, 3, 4, 4, 3.3, 'Ashley is truly one of the greatest tutors I have had the pleasure of working with. She not only teaches her students, but actually takes the time to help them understand whatever subject they need help with.'),
+(3, 5, 3, 4, 4, 4, 3.7, 'I am so happy that I found Ashley at Enrich Your Academics. I have been applying for multiple research and educational grants during this past year, and she has been a tremendous help to me.'),
+(4, 5, 4, 4, 4, 4, 4, ' I have recommended 6 people to him so far, they all got interviews, acceptance and at times even scholarships.'),
+(5, 6, 4, 3, 5, 5, 3.9, 'I am extremely grateful for Derek''s help with my personal statement for law school and cannot recommend him enough.  '),
+(6, 7, 3, 4, 4, 3, 3.6, 'I have never felt comfortable writing personal statements or essays in general. Edmund was recommended to me by a friend and I can honestly say it was the best recommendation anyone has ever given me.');
 
 ALTER SEQUENCE tutor_id_seq RESTART WITH 9;
 
