@@ -9,15 +9,15 @@ export const Routes = () => {
     const {user} = useStateContext();
     return (
         <Switch>
-            <Route exact path="/">
-                <Results/>
-            </Route>
-            <Route exact path="/chats">
-                {user.username !== undefined ? <ChatRoom/> : <Redirect to={{ pathname: '/' }} />}
-            </Route>
-            <Route path="/:id">
-                <TutorProfile/>
-            </Route>
+            <Route exact path="/"
+                   render={() => <Results/>}
+            />
+            <Route exact path="/chats"
+                   render={() => user.username !== undefined ? <ChatRoom/> : <Redirect to={{ pathname: '/' }} />}
+            />
+            <Route path="/:id"
+                   render={() => <TutorProfile/>}
+            />
         </Switch>
     );
 }

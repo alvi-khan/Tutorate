@@ -42,6 +42,7 @@ export const TutorProfileForm = (props) => {
         });
         const modifiedUser = await(res.json());
         setUser(modifiedUser);
+        localStorage.setItem('user', JSON.stringify(modifiedUser));
         if (modifiedUser.tutor != null) history.push("/" + modifiedUser.tutor.id);
     }
 
