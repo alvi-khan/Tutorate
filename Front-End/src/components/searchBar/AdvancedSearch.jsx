@@ -12,7 +12,7 @@ import Grid from "@mui/material/Grid";
 export const AdvancedSearch = (props) => {
   const [subjects, setSubjects] = useState([]);
   const [grades, setGrades] = useState([]);
-  const [wages, setWages] = useState([200, 2000]);
+  const [wages, setWages] = useState([0, 10000]);
   const [rank, setRank] = useState(0);
   const { searchParams, setSearchParams } = useStateContext();
 

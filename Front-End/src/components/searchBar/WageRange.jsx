@@ -9,7 +9,7 @@ export const WageRange = (props) => {
 
   return (
     <Slider
-      defaultValue={props.wages == null ? [20, 2000] : props.wages}
+      defaultValue={props.wages == null ? [0, 10000] : props.wages}
       onChange={(event, value) => {props.onWageChange(value)}}
       marks={marks}
       min={0}

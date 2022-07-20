@@ -10,7 +10,7 @@ export const StateContextProvider = ({ children }) => {
     const defaultParams = {
         subjects: [],
         grades: [],
-        wages: [200, 2000],
+        wages: [0, 10000],
         rank: 0,
     }
 
