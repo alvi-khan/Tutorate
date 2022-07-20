@@ -47,7 +47,7 @@ export const Results = () => {
                     </Link>
                     <Rating value={result.averageRating} readOnly precision={0.2}/>
                     <br/>
-                    <p className="mb-2" onClick={() => {
+                    <p className="mb-2" style={{cursor: "pointer"}} onClick={() => {
                       setSearchTerm(result.location);
                       setSearchParams({...defaultParams});
                     }}><i className="bi bi-geo-alt"/>&nbsp;{result.location}</p>

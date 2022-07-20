@@ -1,19 +1,22 @@
 import React, { useEffect, useState } from 'react';
-import { useDebounce } from 'use-debounce';
+import {useDebouncedCallback} from 'use-debounce';
 
 import { useStateContext } from '../../contexts/StateContextProvider';
 import { AdvancedSearch } from './AdvancedSearch';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
 export const Search = () => {
-  const { setSearchTerm } = useStateContext();
+  const { searchTerm, setSearchTerm } = useStateContext();
   const [text, setText] = useState('');
   const [advancedSearchShown, setAdvancedSearchShown] = useState(false);
-  const [debouncedValue] = useDebounce(text, 300);
+  const debounced = useDebouncedCallback((text) => setSearchTerm(text), 300);
 
-  useEffect(() => {
-    if (debouncedValue) setSearchTerm(debouncedValue);
-  }, [debouncedValue]);
+  function updateText(text) {
+      debounced(text);
+      setText(text);
+  }
+
+  useEffect(() => setText(searchTerm), [searchTerm]);
 
   return (
     <div className="relative ">
@@ -23,10 +26,10 @@ export const Search = () => {
         className="sm:w-96 w-80 h-10 dark:bg-gray-200  border rounded-full shadow-sm outline-none p-6 text-black hover:shadow-lg"
         style={{width: 450}}
         placeholder="🔎 Search by Name or Location"
-        onChange={(e) => setText(e.target.value)}
+        onChange={(e) => updateText(e.target.value)}
       />
       {text !== '' && (
-        <button type="button" className="absolute top-3 right-16" onClick={() => setText('')}>
+        <button type="button" className="absolute top-3 right-16" onClick={() => updateText('')}>
           ❌
         </button>
       )}
