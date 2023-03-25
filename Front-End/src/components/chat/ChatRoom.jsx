@@ -23,7 +23,7 @@ export const ChatRoom = () => {
     }, [])
 
     const connect = () => {
-        let Sock = new SockJS('http://localhost:8080/ws');
+        let Sock = new SockJS(`${window.location.protocol}//${window.location.hostname}:8080/ws`);
         stompClient = over(Sock);
         stompClient.debug = null;   // disable log messages
         stompClient.connect({}, onConnected, onError);
@@ -46,7 +46,7 @@ export const ChatRoom = () => {
           };
           stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
 
-          const res = await fetch(`http://localhost:8080/message/prefetch?name=${user.username}`, {
+          const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/message/prefetch?name=${user.username}`, {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

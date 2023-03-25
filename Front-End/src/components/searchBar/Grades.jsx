@@ -11,7 +11,7 @@ export const Grades = (props) => {
     }
 
     useEffect(async () => {
-        const res = await fetch(`http://localhost:8080/tutor/getAllGrades`, {
+        const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/tutor/getAllGrades`, {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

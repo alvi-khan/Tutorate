@@ -14,7 +14,7 @@ export const ProfileBar = () => {
     const history = useHistory();
 
     const logout = async () => {
-        await fetch(`http://localhost:8080/user/logout`, {
+        await fetch(`${window.location.protocol}//${window.location.hostname}:8080/user/logout`, {
             method: 'GET',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},

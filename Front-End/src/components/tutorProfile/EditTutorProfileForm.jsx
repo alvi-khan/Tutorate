@@ -34,7 +34,7 @@ export const EditTutorProfileForm = (props) => {
         formData.append("updatedTutor", new Blob([jsonData], {type: 'application/json'}));
 
         handleClose();
-        const res = await fetch(`http://localhost:8080/tutor/edit`, {
+        const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/tutor/edit`, {
             method: 'POST',
             credentials: 'include',
             body: formData,
@@ -56,7 +56,7 @@ export const EditTutorProfileForm = (props) => {
             <form onSubmit={editProfile} className="optionsContainer">
                 <Grid container spacing={4} alignItems="center">
                     <Grid item xs={6}>
-                        <ImageUpload image={user.tutor.image === null ? image : undefined} setImage={setImage} imageLink={user.tutor.image === null ? "" : "http://localhost:8080" + user.tutor.image}/>
+                        <ImageUpload image={user.tutor.image === null ? image : undefined} setImage={setImage} imageLink={user.tutor.image === null ? "" : `${window.location.protocol}//${window.location.hostname}:8080${user.tutor.image}`}/>
                     </Grid>
                     <Grid item xs={6}>
                         <Grid container spacing={4}>

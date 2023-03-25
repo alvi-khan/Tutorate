@@ -17,7 +17,7 @@ export const TutorProfile = () => {
     const [refetch, setRefetch] = useState(false);
 
     const getTutor = async () => {
-        const res = await fetch(`http://localhost:8080/tutor/${id}`, {
+        const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/tutor/${id}`, {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -77,7 +77,7 @@ export const TutorProfile = () => {
                             <Grid item xs={12}>
                                 <Grid container>
                                     <Grid item xs={4} className="p-3">
-                                        <img src={tutor.image === null ? "./profile.png" : "http://localhost:8080" + tutor.image}
+                                        <img src={tutor.image === null ? "./profile.png" : `${window.location.protocol}//${window.location.hostname}:8080${tutor.image}`}
                                              className="img-fluid rounded-circle" alt=""/>
                                     </Grid>
                                     <Grid item xs={8} className="pl-5">
