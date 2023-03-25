@@ -5,7 +5,7 @@ export const Reviews = (props) => {
     const [reviews, setReviews] = useState([]);
 
     const getReviews = async () => {
-        const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/tutor/review?tutorId=${props.id}`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/tutor/review?tutorId=${props.id}`, {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

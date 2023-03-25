@@ -14,7 +14,7 @@ import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = "http://localhost:3000", maxAge = 3600, allowCredentials = "true")
+@CrossOrigin(origins = {"http://localhost:3000", "https://tutorate.onrender.com", "https://tutorate-private-production.up.railway.app", "https://8080-73c1790e07624f5090a7f3d032810880.onpatr.cloud"}, maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/tutor")
 public class TutorController {

@@ -25,7 +25,7 @@ export const RateForm = (props) => {
         const rateParams = {effectiveness, clarity, patience, punctuality, review};
         event.preventDefault();
         handleClose();
-        await fetch(`${window.location.protocol}//${window.location.hostname}:8080/tutor/rate?tutorId=${props.tutor_id}`, {
+        await fetch(`${process.env.REACT_APP_BASE_URL}/tutor/rate?tutorId=${props.tutor_id}`, {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },

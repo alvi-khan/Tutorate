@@ -13,7 +13,7 @@ export const Results = () => {
 
   const getResults = async () => {
     setLoading(true);
-    const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/tutor/getTutors?searchTerm=${searchTerm}`, {
+    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/tutor/getTutors?searchTerm=${searchTerm}`, {
       method: 'POST',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
@@ -40,7 +40,7 @@ export const Results = () => {
                         <div className="card-body">
                           <div className="row">
                             <div className="col-md-4 d-flex">
-                              <img src={result.image === null ? "./profile.png" : `${window.location.protocol}//${window.location.hostname}:8080${result.image}`}
+                              <img src={result.image === null ? "./profile.png" : `${process.env.REACT_APP_BASE_URL}${result.image}`}
                                    className="m-auto img-fluid rounded-circle" width="128" height="128" alt=""/>
                             </div>
                             <div className="col-md-8">

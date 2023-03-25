@@ -12,7 +12,7 @@ export const Subjects = (props) => {
   }
 
   useEffect(async () => {
-    const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/tutor/getAllSubjects`, {
+    const res = await fetch(`${process.env.REACT_APP_BASE_URL}/tutor/getAllSubjects`, {
       method: 'GET',
       credentials: 'include',
       headers: { 'Content-Type': 'application/json' },

@@ -35,7 +35,7 @@ export const TutorProfileForm = (props) => {
         formData.append("tutor", new Blob([jsonData], {type: 'application/json'}));
 
         handleClose();
-        const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/tutor/add`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/tutor/add`, {
             method: 'POST',
             credentials: 'include',
             body: formData,

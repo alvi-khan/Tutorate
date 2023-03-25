@@ -14,7 +14,7 @@ export const ProfileDialog = (props) => {
     const [showLogin, setShowLogin] = useState(true);
 
     const checkUser = async () => {
-        const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/user/checkUser`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/user/checkUser`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
@@ -32,7 +32,7 @@ export const ProfileDialog = (props) => {
     }
 
     const login = async () => {
-        const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/user/login`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/user/login`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
@@ -52,7 +52,7 @@ export const ProfileDialog = (props) => {
     }
 
     const register = async () => {
-        const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/user/register`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/user/register`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},

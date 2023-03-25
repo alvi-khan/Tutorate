@@ -5,7 +5,7 @@ export const Location = (props) => {
     const [locations, setLocations] = useState([]);
 
     useEffect(async () => {
-        const res = await fetch(`${window.location.protocol}//${window.location.hostname}:8080/tutor/getAllLocations`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/tutor/getAllLocations`, {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
