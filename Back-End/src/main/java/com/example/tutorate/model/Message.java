@@ -15,6 +15,8 @@ public class Message {
     private String message;
     private Status status;
 
+    private String senderImage;
+
     public Message() {
 
     }
@@ -64,5 +66,13 @@ public class Message {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public String getSenderImage() {
+        return this.senderImage;
+    }
+
+    public void setSenderImage(String image) {
+        this.senderImage = image;
     }
 }

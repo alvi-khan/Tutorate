@@ -17,6 +17,7 @@ export const ChatRoom = () => {
     const [receiver, setReceiver] = useState(location.state ? location.state.receiver : "");
     const [connected, setConnected] = useState(false);
     const [input, setInput] = useState("");
+    const [userAvatars, setUserAvatars] = useState(new Map());
 
     useEffect(async () => {
         connect();
@@ -39,6 +40,14 @@ export const ChatRoom = () => {
         userJoin();
     }
 
+    const downloadAvatar = async (user, image) => {
+        if (userAvatars.get(user))  return;
+
+        const avatar = <Avatar src={`${process.env.REACT_APP_BASE_URL}${image}`}/>
+        userAvatars.set(user, avatar);
+        setUserAvatars(new Map(userAvatars));
+    }
+
     const userJoin = async () => {
           let chatMessage = {
             senderName: user.username,
@@ -54,6 +63,9 @@ export const ChatRoom = () => {
 
           const data = await res.json();
           data.map((item, index) => {
+              if (item.senderImage != null && item.senderImage != "") {
+                downloadAvatar(item.senderName, item.senderImage);
+              }
               let key = item.senderName === user.username ? item.receiverName : item.senderName;
               if(messages.get(key)) {
                   messages.get(key).push(item);
@@ -105,7 +117,8 @@ export const ChatRoom = () => {
                 senderName: user.username,
                 receiverName: receiver,
                 message: input,
-                status: "MESSAGE"
+                status: "MESSAGE",
+                senderImage: user.tutor ? user.tutor.image : null
             };
             if(user.username !== receiver) {
                 messages.get(receiver).push(chatMessage);
@@ -119,7 +132,7 @@ export const ChatRoom = () => {
     return (
         <div className="chat-box">
             {messages.size !== 0 &&
-                <ContactList contacts={[ ...messages.keys()]} currentContact={receiver} selectContact={setReceiver}/>
+                <ContactList contacts={[ ...messages.keys()]} avatars={userAvatars} currentContact={receiver} selectContact={setReceiver}/>
             }
 
             {messages.size === 0 &&
@@ -151,7 +164,8 @@ export const ChatRoom = () => {
                         {[...messages.get(receiver)].map((chat,index)=>(
                             <li className={`message ${chat.senderName === user.username && "self"}`} key={index}>
                                 {chat.senderName !== user.username &&
-                                    <Avatar>{chat.senderName[0]}</Avatar>
+                                    (userAvatars.get(chat.senderName) ||
+                                    <Avatar>{chat.senderName[0]}</Avatar>)
                                 }
                                 <div className="message-data">{chat.message}</div>
                             </li>

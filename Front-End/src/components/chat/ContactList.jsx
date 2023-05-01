@@ -13,7 +13,10 @@ export const ContactList = (props) => {
                     <ListItem key={index} onClick={() => props.selectContact(contact)}>
                         <ListItemButton style={{backgroundColor: getSelectedColor(contact), borderRadius: 10}}>
                             <ListItemAvatar>
-                                <Avatar src={`/profile.png`}/>
+                            {
+                                (props.avatars.get(contact) ||
+                                <Avatar>{contact[0]}</Avatar>)
+                            }
                             </ListItemAvatar>
                             <ListItemText id={index} primary={contact} />
                         </ListItemButton>
