@@ -8,6 +8,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 export const Search = () => {
   const { searchTerm, setSearchTerm } = useStateContext();
   const [text, setText] = useState('');
+  const [filterActive, setFiltersActive] = useState(false);
   const [advancedSearchShown, setAdvancedSearchShown] = useState(false);
   const debounced = useDebouncedCallback((text) => setSearchTerm(text), 300);
 
@@ -34,9 +35,20 @@ export const Search = () => {
         </button>
       )}
       <button type="button" onClick={() => {setAdvancedSearchShown(true)}}>
-        <i className="ml-5 fs-4 bi bi-sliders2" />
+        <i 
+          className="ml-5 py-1 px-2 rounded-lg fs-4 bi bi-sliders2"
+          style={{
+            backgroundColor: filterActive ? "rgba(0, 0, 0, 0.08)" : 'transparent',
+          }}
+        />
       </button>
-      <AdvancedSearch show={advancedSearchShown} onHide={() => setAdvancedSearchShown(false)}/>
+      <AdvancedSearch 
+        show={advancedSearchShown}
+        onHide={(filterActive) => {
+          setAdvancedSearchShown(false);
+          setFiltersActive(filterActive);
+        }}
+      />
     </div>
   );
 };

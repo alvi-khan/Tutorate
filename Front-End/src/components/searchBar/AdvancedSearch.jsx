@@ -19,8 +19,16 @@ export const AdvancedSearch = (props) => {
   const updateParams = () => {
     const newParams = { subjects, wages, rank, grades };
     setSearchParams(newParams);
-    props.onHide();
+    closeModal();
   };
+
+  const closeModal = () => {
+    if (grades.length != 0 || (rank != null && rank != 0) || subjects.length != 0 || wages[0] != 0 || wages[1] != 10000) {
+      props.onHide(true);
+    } else {
+      props.onHide(false);
+    }
+  }
 
   return (
     <ReactModal
@@ -53,7 +61,7 @@ export const AdvancedSearch = (props) => {
         </Grid>
         <div className="d-inline-flex mx-auto mt-4">
           <button className="button" type="button" onClick={updateParams}>Search</button>
-          <button className="button" type="button" onClick={props.onHide}>Cancel</button>
+          <button className="button" type="button" onClick={closeModal}>Cancel</button>
         </div>
       </div>
     </ReactModal>
