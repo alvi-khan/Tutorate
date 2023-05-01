@@ -36,7 +36,7 @@ export const Results = () => {
               {results?.map((result, index) => (
                   <React.Fragment>
                     <div key={index} className="container w-full" style={{margin: 5, width: 380}}>
-                      <div className="card mt-3 resultBorderRadius">
+                      <div className="card mt-3 mb-3 resultBorderRadius">
                         <div className="card-body">
                           <div className="row">
                             <div className="col-md-4 d-flex">
