@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface MessageRepository extends JpaRepository<Message,Integer> {
-    @Query(value = "SELECT * FROM message WHERE receiver_name = :username AND status = 1 " +
-            "OR sender_name = :username AND status = 1", nativeQuery = true)
-    List<Message> getPrefetchMessages(String username);
+    @Query(value = "SELECT * FROM message WHERE receiverid = :userID OR senderid = :userID", nativeQuery = true)
+    List<Message> getMessages(int userID);
 }

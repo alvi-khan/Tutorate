@@ -56,7 +56,7 @@ export const TutorProfile = () => {
                         <i className="icon bi bi-pencil mr-1" />
                         &nbsp;Write a Review
                     </button>
-                    <Link to={{pathname: "/chats", state: {receiver: tutor.username}}}>
+                    <Link to={{pathname: "/chats", state: {receiver: tutor}}}>
                         <button className="button mt-4" type="submit">
                             <i className="icon bi bi-chat-dots mr-1" />
                             &nbsp;Send Message

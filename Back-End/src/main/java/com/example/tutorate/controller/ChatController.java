@@ -17,16 +17,10 @@ public class ChatController {
     @Autowired
     private MessageRepository messageRepository;
 
-    @MessageMapping("/message")
-    @SendTo("/chatroom/public")
-    public Message receiveMessage(@Payload Message message){
-        return message;
-    }
-
-    @MessageMapping("/private-message")
+    @MessageMapping("/messages")
     public Message receivePrivateMessage(@Payload Message message) {
         messageRepository.save(message);
-        simpMessagingTemplate.convertAndSendToUser(message.getReceiverName(), "/private", message);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(message.getReceiverID()), "/", message);
         return message;
     }
 }

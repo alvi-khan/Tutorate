@@ -14,14 +14,18 @@ export const ChatRoom = () => {
     const location = useLocation();
     const {user} = useStateContext();
     const [messages, setMessages] = useState(new Map());
-    const [receiver, setReceiver] = useState(location.state ? location.state.receiver : "");
+    const [receiver, setReceiver] = useState(location.state ? location.state.receiver : null);
     const [connected, setConnected] = useState(false);
     const [input, setInput] = useState("");
-    const [userAvatars, setUserAvatars] = useState(new Map());
+    const [userData, setUserData] = useState(new Map());
 
     useEffect(async () => {
         connect();
     }, [])
+
+    useEffect(() => {
+        if (receiver)   downloadUserData(receiver.id);
+    }, [receiver])
 
     const connect = () => {
         let Sock = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws`);
@@ -36,26 +40,24 @@ export const ChatRoom = () => {
 
     const onConnected = () => {
         setConnected(true);
-        stompClient.subscribe('/user/' + user.username + '/private', onPrivateMessage);
+        stompClient.subscribe(`/userMessages/${user.id}/`, onNewMessage);
         userJoin();
     }
 
-    const downloadAvatar = async (user, image) => {
-        if (userAvatars.get(user))  return;
+    const downloadUserData = async (userID) => {
+        if (userData.get(userID))  return;
 
-        const avatar = <Avatar src={`${process.env.REACT_APP_BASE_URL}${image}`}/>
-        userAvatars.set(user, avatar);
-        setUserAvatars(new Map(userAvatars));
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/user/${userID}`, {
+            method: 'GET',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        userData.set(userID, await res.json());
+        setUserData(new Map(userData));
     }
 
     const userJoin = async () => {
-          let chatMessage = {
-            senderName: user.username,
-            status: "JOIN"
-          };
-          stompClient.send("/app/message", {}, JSON.stringify(chatMessage));
-
-          const res = await fetch(`${process.env.REACT_APP_BASE_URL}/message/prefetch?name=${user.username}`, {
+          const res = await fetch(`${process.env.REACT_APP_BASE_URL}/message/getMessages?userID=${user.id}`, {
             method: 'GET',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
@@ -63,10 +65,8 @@ export const ChatRoom = () => {
 
           const data = await res.json();
           data.map((item, index) => {
-              if (item.senderImage != null && item.senderImage != "") {
-                downloadAvatar(item.senderName, item.senderImage);
-              }
-              let key = item.senderName === user.username ? item.receiverName : item.senderName;
+              downloadUserData(item.senderID);
+              let key = item.senderID === user.id ? item.receiverID : item.senderID;
               if(messages.get(key)) {
                   messages.get(key).push(item);
                   setMessages(new Map(messages));
@@ -78,31 +78,24 @@ export const ChatRoom = () => {
               }
           });
 
-          if (receiver !== "" && !messages.get(receiver)) {
-              messages.set(receiver, []);
+          if (receiver && !messages.get(receiver.id)) {
+              messages.set(receiver.id, []);
               setMessages(new Map(messages));
           }
     }
     
-    const onPrivateMessage = (payload) => {
-        if(payload.status != "OTHERS") {
-            var payloadData = JSON.parse(payload.body);
-            if(messages.get(payloadData.senderName)) {
-                messages.get(payloadData.senderName).push(payloadData);
-                setMessages(new Map(messages));
-            }
-            else {
-                let list = [];
-                list.push(payloadData);
-                messages.set(payloadData.senderName, list);
-                setMessages(new Map(messages));
-            }
+    const onNewMessage = (payload) => {
+        var payloadData = JSON.parse(payload.body);
+        downloadUserData(payloadData.senderID);
+        if(messages.get(payloadData.senderID)) {
+            messages.get(payloadData.senderID).push(payloadData);
+            setMessages(new Map(messages));
         }
         else {
-            if(!messages.get(payloadData.senderName)) {
-                messages.set(payloadData.senderName,[]);
-                setMessages(new Map(messages));
-            }
+            let list = [];
+            list.push(payloadData);
+            messages.set(payloadData.senderID, list);
+            setMessages(new Map(messages));
         }
     }
 
@@ -112,27 +105,27 @@ export const ChatRoom = () => {
     }
 
     const sendMessage = async() => {
-        if (stompClient) {
-            var chatMessage = {
-                senderName: user.username,
-                receiverName: receiver,
-                message: input,
-                status: "MESSAGE",
-                senderImage: user.tutor ? user.tutor.image : null
-            };
-            if(user.username !== receiver) {
-                messages.get(receiver).push(chatMessage);
-                setMessages(new Map(messages));
-            }
-            stompClient.send("/app/private-message", {}, JSON.stringify(chatMessage));
-            setInput("");
+        if (!stompClient)   return;
+        var chatMessage = {
+            senderID: user.id,
+            receiverID: receiver.id,
+            message: input,
+            status: "SENT"
+        };
+
+        if(user.id !== receiver.id) {
+            messages.get(receiver.id).push(chatMessage);
+            setMessages(new Map(messages));
         }
+
+        stompClient.send("/chat/messages", {}, JSON.stringify(chatMessage));
+        setInput("");
     }
 
     return (
         <div className="chat-box">
             {messages.size !== 0 &&
-                <ContactList contacts={[ ...messages.keys()]} avatars={userAvatars} currentContact={receiver} selectContact={setReceiver}/>
+                <ContactList userData={userData} currentContact={receiver} selectContact={setReceiver}/>
             }
 
             {messages.size === 0 &&
@@ -150,7 +143,7 @@ export const ChatRoom = () => {
                 </div>
             }
 
-            {messages.size !== 0 && receiver === "" &&
+            {messages.size !== 0 && !receiver &&
                 <div className="flex-grow chat-content">
                     <div className="default-text">
                         <i className="bi bi-chat-left-fill"/>
@@ -158,18 +151,36 @@ export const ChatRoom = () => {
                     </div>
                 </div>
             }
-            {receiver !== "" && messages.get(receiver) &&
+            {receiver && messages.get(receiver.id) &&
                 <div className="flex-grow chat-content">
                     <ul className="flex-grow chat-messages">
-                        {[...messages.get(receiver)].map((chat,index)=>(
-                            <li className={`message ${chat.senderName === user.username && "self"}`} key={index}>
-                                {chat.senderName !== user.username &&
-                                    (userAvatars.get(chat.senderName) ||
-                                    <Avatar>{chat.senderName[0]}</Avatar>)
-                                }
-                                <div className="message-data">{chat.message}</div>
-                            </li>
-                        ))}
+                        {[...messages.get(receiver.id)].map((chat,index) => {
+                            const senderData = userData.get(chat.senderID);
+
+                            return (
+                                <li className={`message ${chat.senderID === user.id && "self"}`} key={index}>
+                                    {
+                                        chat.senderID !== user.id &&
+                                        senderData && senderData.tutor && senderData.tutor.image &&
+                                        <Avatar src={`${process.env.REACT_APP_BASE_URL}${senderData.tutor.image}`}/>
+                                    }
+                                    {
+                                        chat.senderID != user.id &&
+                                        (
+                                            senderData && senderData.tutor && !senderData.tutor.image ||
+                                            senderData && !senderData.tutor
+                                        ) &&
+                                        <Avatar>{senderData.username[0]}</Avatar>
+                                    }
+                                    {
+                                        chat.senderID != user.id &&
+                                        !senderData &&
+                                        <Avatar/>
+                                    }
+                                    <div className="message-data">{chat.message}</div>
+                                </li>
+                            );
+                        })}
                     </ul>
                 <div className="send-message">
                     <TextField placeholder="Type a message..." fullWidth value={input} onChange={handleMessage}

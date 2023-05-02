@@ -10,7 +10,7 @@ import com.example.tutorate.model.User;
 
 @CrossOrigin(origins = {"http://localhost:3000", "https://tutorate.onrender.com", "https://tutorate-private-production.up.railway.app", "https://8080-73c1790e07624f5090a7f3d032810880.onpatr.cloud"}, maxAge = 3600, allowCredentials = "true")
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/auth")
 public class LoginController {
     @Autowired
     private UserService userService;

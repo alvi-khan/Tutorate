@@ -14,7 +14,7 @@ export const ProfileBar = () => {
     const history = useHistory();
 
     const logout = async () => {
-        await fetch(`${process.env.REACT_APP_BASE_URL}/user/logout`, {
+        await fetch(`${process.env.REACT_APP_BASE_URL}/auth/logout`, {
             method: 'GET',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},

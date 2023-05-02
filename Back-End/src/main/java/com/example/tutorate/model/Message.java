@@ -10,20 +10,18 @@ public class Message {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String senderName;
-    private String receiverName;
+    private int senderID;
+    private int receiverID;
     private String message;
-    private Status status;
-
-    private String senderImage;
+    private MessageStatus status;
 
     public Message() {
 
     }
 
-    public Message(String senderName, String receiverName, String message, Status status){
-        this.senderName = senderName;
-        this.receiverName = receiverName;
+    public Message(int senderID, int receiverID, String message, MessageStatus status){
+        this.senderID = senderID;
+        this.receiverID = receiverID;
         this.message = message;
         this.status = status;
     }
@@ -36,20 +34,20 @@ public class Message {
         this.id = id;
     }
 
-    public String getSenderName() {
-        return senderName;
+    public int getSenderID() {
+        return senderID;
     }
 
-    public void setSenderName(String senderName) {
-        this.senderName = senderName;
+    public void setSenderID(int senderID) {
+        this.senderID = senderID;
     }
 
-    public String getReceiverName() {
-        return receiverName;
+    public int getReceiverID() {
+        return receiverID;
     }
 
-    public void setReceiverName(String receiverName) {
-        this.receiverName = receiverName;
+    public void setReceiverID(int receiverID) {
+        this.receiverID = receiverID;
     }
 
     public String getMessage() {
@@ -60,19 +58,11 @@ public class Message {
         this.message = message;
     }
 
-    public Status getStatus() {
+    public MessageStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Status status) {
+    public void setStatus(MessageStatus status) {
         this.status = status;
-    }
-
-    public String getSenderImage() {
-        return this.senderImage;
-    }
-
-    public void setSenderImage(String image) {
-        this.senderImage = image;
     }
 }

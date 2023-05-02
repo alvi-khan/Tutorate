@@ -14,7 +14,7 @@ export const ProfileDialog = (props) => {
     const [showLogin, setShowLogin] = useState(true);
 
     const checkUser = async () => {
-        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/user/checkUser`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/checkUser`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
@@ -32,7 +32,7 @@ export const ProfileDialog = (props) => {
     }
 
     const login = async () => {
-        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/user/login`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/login`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
@@ -52,7 +52,7 @@ export const ProfileDialog = (props) => {
     }
 
     const register = async () => {
-        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/user/register`, {
+        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/auth/register`, {
             method: 'POST',
             credentials: 'include',
             headers: {'Content-Type': 'application/json'},
