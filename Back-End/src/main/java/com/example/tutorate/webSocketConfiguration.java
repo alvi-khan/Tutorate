@@ -13,7 +13,7 @@ public class webSocketConfiguration implements WebSocketMessageBrokerConfigurer 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
      registry.setApplicationDestinationPrefixes("/chat");
-     registry.enableSimpleBroker("/chatroom", "/userMessages");
+     registry.enableSimpleBroker("/statusUpdate", "/userMessages");
      registry.setUserDestinationPrefix("/userMessages");
     }
 

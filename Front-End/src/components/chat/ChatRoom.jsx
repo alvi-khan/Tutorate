@@ -15,7 +15,6 @@ export const ChatRoom = () => {
     const {user} = useStateContext();
     const [messages, setMessages] = useState(new Map());
     const [receiver, setReceiver] = useState(location.state ? location.state.receiver : null);
-    const [connected, setConnected] = useState(false);
     const [input, setInput] = useState("");
     const [userData, setUserData] = useState(new Map());
 
@@ -39,9 +38,17 @@ export const ChatRoom = () => {
     }
 
     const onConnected = () => {
-        setConnected(true);
         stompClient.subscribe(`/userMessages/${user.id}/`, onNewMessage);
-        userJoin();
+        stompClient.subscribe(`/userMessages/${user.id}/keepAlive`, keepAlive);
+        stompClient.subscribe(`/statusUpdate`, updateUserStatus);
+        keepAlive(true);
+        retrieveMessages();
+    }
+
+    const updateUserStatus = (payload) => {
+        var userID = JSON.parse(payload.body);
+        userData.delete(userID);
+        downloadUserData(userID);
     }
 
     const downloadUserData = async (userID) => {
@@ -56,7 +63,7 @@ export const ChatRoom = () => {
         setUserData(new Map(userData));
     }
 
-    const userJoin = async () => {
+    const retrieveMessages = async () => {
           const res = await fetch(`${process.env.REACT_APP_BASE_URL}/message/getMessages?userID=${user.id}`, {
             method: 'GET',
             credentials: 'include',
@@ -66,6 +73,7 @@ export const ChatRoom = () => {
           const data = await res.json();
           data.map((item, index) => {
               downloadUserData(item.senderID);
+              downloadUserData(item.receiverID);
               let key = item.senderID === user.id ? item.receiverID : item.senderID;
               if(messages.get(key)) {
                   messages.get(key).push(item);
@@ -97,6 +105,10 @@ export const ChatRoom = () => {
             messages.set(payloadData.senderID, list);
             setMessages(new Map(messages));
         }
+    }
+
+    const keepAlive = (payload) => {
+        stompClient.send("/chat/keepAlive", {}, user.id);
     }
 
     const handleMessage = (event) => {

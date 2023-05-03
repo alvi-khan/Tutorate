@@ -15,6 +15,8 @@ public class User {
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
+    private int keepAliveCount;
+
 
     public User() {
         role = Role.user;
@@ -58,5 +60,13 @@ public class User {
 
     public void setTutor(Tutor tutor) {
         this.tutor = tutor;
+    }
+
+    public int getKeepAliveCount() {
+        return keepAliveCount;
+    }
+
+    public void setKeepAliveCount(int keepAliveCount) {
+        this.keepAliveCount = keepAliveCount;
     }
 }
