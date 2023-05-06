@@ -2,13 +2,13 @@ import {Avatar, Badge, List, ListItem, ListItemAvatar, ListItemButton, ListItemT
 import {useStateContext} from "../../contexts/StateContextProvider";
 import {useChatContext} from "../../contexts/ChatContextProvider";
 
-export const ContactList = (props) => {
+export const ContactList = () => {
 
     const {user} = useStateContext();
-    const {contactData} = useChatContext();
+    const {contactData, receiver, setReceiver} = useChatContext();
 
     const getSelectedColor = (contact) => {
-        if (props.currentContact && props.currentContact.id == contact.id)    return "#ececec";
+        if (receiver && receiver.id == contact.id)    return "#ececec";
     }
 
     return(
@@ -17,7 +17,7 @@ export const ContactList = (props) => {
                 const contact = contactData.get(id);
                 const online = contact.socketSessionID != null;
                 return (
-                    <ListItem key={index} onClick={() => props.selectContact(contact)}>
+                    <ListItem key={index} onClick={() => setReceiver(contact)}>
                         <ListItemButton style={{backgroundColor: getSelectedColor(contact), borderRadius: 10}}>
                             <ListItemAvatar>
                             {

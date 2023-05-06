@@ -7,6 +7,7 @@ import {useStateContext} from "../../contexts/StateContextProvider";
 import {ProfileDialog} from "../ProfileDialog";
 import {Chip, Grid, Rating} from "@mui/material";
 import {Reviews} from "./TutorReviews";
+import { useChatContext } from '../../contexts/ChatContextProvider';
 
 export const TutorProfile = () => {
     let { id } = useParams();
@@ -15,6 +16,7 @@ export const TutorProfile = () => {
     const [formShown, setFormShown] = useState(false);
     const [profileDialogShow, setProfileDialogShow] = useState(false);
     const [refetch, setRefetch] = useState(false);
+    const {setReceiver} = useChatContext();
 
     const getTutor = async () => {
         const res = await fetch(`${process.env.REACT_APP_BASE_URL}/tutor/${id}`, {
@@ -56,8 +58,8 @@ export const TutorProfile = () => {
                         <i className="icon bi bi-pencil mr-1" />
                         &nbsp;Write a Review
                     </button>
-                    <Link to={{pathname: "/chats", state: {receiver: tutor}}}>
-                        <button className="button mt-4" type="submit">
+                    <Link to={{pathname: "/chats"}}>
+                        <button className="button mt-4" type="submit" onClick={() => setReceiver(tutor)}>
                             <i className="icon bi bi-chat-dots mr-1" />
                             &nbsp;Send Message
                         </button>

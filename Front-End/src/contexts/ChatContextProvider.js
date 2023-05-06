@@ -10,6 +10,18 @@ export const ChatContextProvider = ({ children }) => {
     const [messages, setMessages] = useState(new Map());
     const [contactData, setContactData] = useState(new Map());
     const [stompClient, setStompClient] = useState(null);
+    const [receiver, setReceiver] = useState(null);
+
+    useEffect(() => {
+        if (receiver && !messages.get(receiver.id)) {
+            messages.set(receiver.id, []);
+            setMessages(new Map(messages));
+        }
+        if (receiver) {
+            markAsRead(receiver.id);
+            downloadContactData(receiver.id);
+        }
+    }, [receiver])
 
     useEffect(() => {
         if(user.id != undefined)    onLogin();
@@ -26,7 +38,8 @@ export const ChatContextProvider = ({ children }) => {
 
     const onConnected = () => {
         stompClient.subscribe(`/userMessages/${user.id}/`, onNewMessage);
-        stompClient.subscribe(`/statusUpdate`, updateContactStatus);
+        stompClient.subscribe(`/userMessages/${user.id}/update`, onMessageUpdate);
+        stompClient.subscribe(`/contactStatusUpdate`, updateContactStatus);
         retrieveMessages(user);
     }
 
@@ -42,6 +55,17 @@ export const ChatContextProvider = ({ children }) => {
         setStompClient(null);
         setMessages(new Map());
         setContactData(new Map());
+    }
+
+    const onMessageUpdate = (payload) => {
+        var payload = JSON.parse(payload.body);
+        var messageList = messages.get(payload.receiverID);
+        for(const message of messageList) {
+            if (message.status == "SENT")   message.status = payload.status;
+            if (message.status == "DELIVERED" && payload.status == "READ")  message.status = payload.status;
+        }
+        messages.set(payload.receiverID, messageList);
+        setMessages(new Map(messages));
     }
 
     const updateContactStatus = (payload) => {
@@ -68,10 +92,16 @@ export const ChatContextProvider = ({ children }) => {
             headers: { 'Content-Type': 'application/json' },
           });
 
+          var senders = new Set();
+
           const data = await res.json();
           data.map((item, index) => {
               downloadContactData(item.senderID);
               downloadContactData(item.receiverID);
+              if (item.status == "SENT" && item.senderID != user.id) {
+                item.status = "DELIVERED";
+                senders.add(item.senderID);
+              }
               let key = item.senderID === user.id ? item.receiverID : item.senderID;
               if(messages.get(key)) {
                   messages.get(key).push(item);
@@ -83,10 +113,30 @@ export const ChatContextProvider = ({ children }) => {
                   setMessages(new Map(messages));
               }
           });
+
+          for(const sender of senders) {
+            if (receiver && sender == receiver.id)  markAsRead(sender);
+            else    markAsDelievered(sender);
+          }
+
+    }
+
+    const markAsDelievered = (senderID) => {
+        stompClient.send("/chat/markAsDelivered", {}, JSON.stringify(senderID));
+    }
+
+    const markAsRead = (senderID) => {
+        const hasUnread = messages.get(senderID).some((message) => message.status != "READ");
+        if (!hasUnread) return;
+        stompClient.send("/chat/markAsRead", {}, JSON.stringify(senderID));
     }
     
     const onNewMessage = (payload) => {
         var payloadData = JSON.parse(payload.body);
+        
+        if (receiver && payloadData.senderID == receiver.id)  markAsRead(payloadData.senderID);
+        else    markAsDelievered(payloadData.senderID);
+        
         downloadContactData(payloadData.senderID);
         if(messages.get(payloadData.senderID)) {
             messages.get(payloadData.senderID).push(payloadData);
@@ -100,7 +150,7 @@ export const ChatContextProvider = ({ children }) => {
         }
     }
 
-    const sendMessage = async(message, receiver) => {
+    const sendMessage = async(message) => {
         if (!stompClient || !receiver)   return;
         var chatMessage = {
             senderID: user.id,
@@ -119,7 +169,7 @@ export const ChatContextProvider = ({ children }) => {
 
     return (
         <ChatContext.Provider value={{
-            messages, setMessages, contactData, downloadContactData, sendMessage
+            messages, contactData, sendMessage, receiver, setReceiver
         }}>
             {children}
         </ChatContext.Provider>

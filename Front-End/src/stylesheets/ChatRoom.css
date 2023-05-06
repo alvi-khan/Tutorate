@@ -63,6 +63,8 @@
   margin: 5px;
   padding: 10px 15px;
   box-shadow: 0 5px 10px rgba(119, 119, 119, .5);
+  display: flex;
+  gap: 5px;
 }
 
 .message.self{

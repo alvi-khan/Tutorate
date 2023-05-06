@@ -1,28 +1,17 @@
-import React, {useEffect, useState} from 'react'
+import React, {useState} from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../../stylesheets/ChatRoom.css";
 import {useStateContext} from "../../contexts/StateContextProvider";
 import {ContactList} from "./ContactList";
-import {Link, useLocation} from "react-router-dom";
+import {Link} from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import {Avatar} from "@mui/material";
 import {useChatContext} from '../../contexts/ChatContextProvider';
 
 export const ChatRoom = () => {
-    const location = useLocation();
     const {user} = useStateContext();
-    const {messages, setMessages, sendMessage, contactData, downloadContactData} = useChatContext();
-    const [receiver, setReceiver] = useState(location.state ? location.state.receiver : null);
+    const {messages, sendMessage, contactData, receiver} = useChatContext();
     const [input, setInput] = useState("");
-
-    useEffect(() => {
-        if (receiver)   downloadContactData(receiver.id);
-
-        if (receiver && !messages.get(receiver.id)) {
-            messages.set(receiver.id, []);
-            setMessages(new Map(messages));
-        }
-    }, [receiver])
 
     const handleMessage = (event) => {
         const {value} = event.target;
@@ -30,15 +19,13 @@ export const ChatRoom = () => {
     }
 
     const handleSend = () => {
-        sendMessage(input, receiver);
+        sendMessage(input);
         setInput("");
     }
 
     return (
         <div className="chat-box">
-            {messages.size !== 0 &&
-                <ContactList currentContact={receiver} selectContact={setReceiver}/>
-            }
+            {messages.size !== 0 && <ContactList />}
 
             {messages.size === 0 &&
                 <div className="flex-grow chat-content">
@@ -66,7 +53,7 @@ export const ChatRoom = () => {
             {receiver && messages.get(receiver.id) &&
                 <div className="flex-grow chat-content">
                     <ul className="flex-grow chat-messages">
-                        {[...messages.get(receiver.id)].map((chat,index) => {
+                        {[...messages.get(receiver.id)].sort((a, b) => a.id - b.id).map((chat,index) => {
                             const senderData = contactData.get(chat.senderID);
 
                             return (
@@ -89,7 +76,19 @@ export const ChatRoom = () => {
                                         !senderData &&
                                         <Avatar/>
                                     }
-                                    <div className="message-data">{chat.message}</div>
+                                    {
+                                        chat.senderID != user.id &&
+                                        <div className="message-data">{chat.message}</div>
+                                    }
+                                    {
+                                        chat.senderID == user.id &&
+                                        <div className="message-data">
+                                            {chat.message}
+                                            {chat.status == "SENT" && <i className="bi bi-check2"/>}
+                                            {chat.status == "DELIVERED" && <i className="bi bi-check2-all"/>}
+                                            {chat.status == "READ" && <i className="bi bi-check-circle"/>}
+                                        </div>
+                                    }
                                 </li>
                             );
                         })}
