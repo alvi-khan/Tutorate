@@ -15,7 +15,7 @@ public class User {
     @JoinColumn(name = "tutor_id")
     private Tutor tutor;
 
-    private int keepAliveCount;
+    private String socketSessionID;
 
 
     public User() {
@@ -62,11 +62,11 @@ public class User {
         this.tutor = tutor;
     }
 
-    public int getKeepAliveCount() {
-        return keepAliveCount;
+    public String getSocketSessionID() {
+        return socketSessionID;
     }
 
-    public void setKeepAliveCount(int keepAliveCount) {
-        this.keepAliveCount = keepAliveCount;
+    public void setSocketSessionID(String socketSessionID) {
+        this.socketSessionID = socketSessionID;
     }
 }

@@ -5,12 +5,14 @@ import com.example.tutorate.model.User;
 import com.example.tutorate.repository.MessageRepository;
 import com.example.tutorate.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.messaging.simp.stomp.StompHeaderAccessor;
 import org.springframework.stereotype.Controller;
-import java.util.List;
+import org.springframework.web.socket.messaging.SessionConnectEvent;
+import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
 @Controller
 public class ChatController {
@@ -30,28 +32,24 @@ public class ChatController {
         return message;
     }
 
-    @MessageMapping("/keepAlive")
-    public void keepAlive(@Payload int userID) {
-        User user = userRepository.findById(userID);
-        user.setKeepAliveCount(3);
+    @EventListener
+    public void onDisconnectEvent(SessionDisconnectEvent event) {
+        User user = userRepository.findBySocketSessionID(event.getSessionId());
+        user.setSocketSessionID(null);
         userRepository.save(user);
+        notifyUserStatusUpdate(user.getId());
     }
 
-    @Scheduled(fixedDelay = 10000, initialDelay = 10000)
-    public void checkConnected() {
-        List<User> users = userRepository.findAllByKeepAliveCountIsGreaterThan(0);
+    @EventListener
+    public void onConnectEvent(SessionConnectEvent event) {
+        StompHeaderAccessor accessor = StompHeaderAccessor.wrap(event.getMessage());
+        int userID = Integer.parseInt(accessor.getNativeHeader("userID").get(0));
+        String sessionID = accessor.getSessionId();
 
-        for(User user : users) {
-            int keepAliveCount = user.getKeepAliveCount();
-            keepAliveCount -= 1;
-            user.setKeepAliveCount(keepAliveCount);
-            userRepository.save(user);
-            if (keepAliveCount == 0) {
-                notifyUserStatusUpdate(user.getId());
-                continue;
-            }
-            simpMessagingTemplate.convertAndSendToUser(String.valueOf(user.getId()), "/keepAlive", true);
-        }
+        User user = userRepository.findById(userID);
+        user.setSocketSessionID(sessionID);
+        userRepository.save(user);
+        notifyUserStatusUpdate(userID);
     }
 
     public void notifyUserStatusUpdate(int userID) {

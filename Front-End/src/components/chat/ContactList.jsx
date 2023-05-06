@@ -15,7 +15,7 @@ export const ContactList = (props) => {
         <List sx={{ width: '100%', maxWidth: 360 }}>
             {[...contactData.keys()].filter(id => id != user.id).map((id, index) => {
                 const contact = contactData.get(id);
-                const online = contact.keepAliveCount != 0;
+                const online = contact.socketSessionID != null;
                 return (
                     <ListItem key={index} onClick={() => props.selectContact(contact)}>
                         <ListItemButton style={{backgroundColor: getSelectedColor(contact), borderRadius: 10}}>

@@ -17,7 +17,7 @@ export const ChatContextProvider = ({ children }) => {
     }, [user]);
 
     useEffect(() => {
-        if(stompClient) stompClient.connect({}, onConnected, onError);
+        if(stompClient) stompClient.connect({"userID": user.id}, onConnected, onError);
     }, [stompClient]);
 
     const onError = (err) => {
@@ -26,9 +26,7 @@ export const ChatContextProvider = ({ children }) => {
 
     const onConnected = () => {
         stompClient.subscribe(`/userMessages/${user.id}/`, onNewMessage);
-        stompClient.subscribe(`/userMessages/${user.id}/keepAlive`, keepAlive);
         stompClient.subscribe(`/statusUpdate`, updateContactStatus);
-        keepAlive(true);
         retrieveMessages(user);
     }
 
@@ -49,11 +47,11 @@ export const ChatContextProvider = ({ children }) => {
     const updateContactStatus = (payload) => {
         var userID = JSON.parse(payload.body);
         contactData.delete(userID);
-        downloadContactData(userID);
+        downloadContactData(userID, true);
     }
 
-    const downloadContactData = async (userID) => {
-        if (contactData.get(userID))  return;
+    const downloadContactData = async (userID, force=false) => {
+        if (!force && contactData.get(userID))  return;
         const res = await fetch(`${process.env.REACT_APP_BASE_URL}/user/${userID}`, {
             method: 'GET',
             credentials: 'include',
@@ -100,10 +98,6 @@ export const ChatContextProvider = ({ children }) => {
             messages.set(payloadData.senderID, list);
             setMessages(new Map(messages));
         }
-    }
-
-    const keepAlive = (payload) => {
-        stompClient.send("/chat/keepAlive", {}, user.id);
     }
 
     const sendMessage = async(message, receiver) => {
