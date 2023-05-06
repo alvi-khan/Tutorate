@@ -27,7 +27,7 @@ public class LoginController {
         HttpSession session = request.getSession();
         if(userService.authenticate(user.getUsername(), user.getPassword())) {
             session.setAttribute("User", user.getUsername());
-            return userRepository.findByUsername(user.getUsername());
+            return userRepository.findByUsernameIgnoreCase(user.getUsername());
         }
         else {
             User invalid = new User();

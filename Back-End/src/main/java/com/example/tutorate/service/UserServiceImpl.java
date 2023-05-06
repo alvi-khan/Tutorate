@@ -11,17 +11,17 @@ public class UserServiceImpl implements UserService{
     UserRepository userRepository;
 
     public boolean userExists(String username) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameIgnoreCase(username);
         return user != null;
     }
 
     public boolean authenticate(String username, String password) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameIgnoreCase(username);
         return password.equals(user.getPassword());
     }
 
     public User addNewUser(User user) {
         userRepository.save(user);
-        return userRepository.findByUsername(user.getUsername());
+        return userRepository.findByUsernameIgnoreCase(user.getUsername());
     }
 }

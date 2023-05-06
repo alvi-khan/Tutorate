@@ -30,7 +30,7 @@ public class TutorController {
     @RequestMapping(value = "/add", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     public User add(@RequestPart("tutor") Tutor tutor, @RequestPart(value = "image", required = false) MultipartFile image, HttpServletRequest request) {
         String username = (String) request.getSession().getAttribute("User");
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameIgnoreCase(username);
         user.setRole(Role.tutor);
 
         String imagePath = tutorService.saveImage(image, user.getId());
@@ -81,7 +81,7 @@ public class TutorController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = {"multipart/form-data"})
     public User editProfile(@RequestPart("updatedTutor") Tutor updatedTutor, @RequestPart(value = "image", required = false) MultipartFile image, HttpServletRequest request) {
         String username = (String) request.getSession().getAttribute("User");
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findByUsernameIgnoreCase(username);
 
         String imagePath = tutorService.saveImage(image, user.getId());
 

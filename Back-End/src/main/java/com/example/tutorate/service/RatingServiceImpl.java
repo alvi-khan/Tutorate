@@ -25,7 +25,7 @@ public class RatingServiceImpl implements RatingService{
     @Override
     public void storeRating(int tutorId, TutorRating tutorRating, HttpServletRequest request) {
         HttpSession session = request.getSession();
-        User user = userRepository.findByUsername((String) session.getAttribute("User"));
+        User user = userRepository.findByUsernameIgnoreCase((String) session.getAttribute("User"));
 
         if(session.getAttribute("User") != null){
             Tutor tutor = tutorRepository.findById(tutorId);
