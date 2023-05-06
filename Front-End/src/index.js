@@ -4,12 +4,15 @@ import { HashRouter as Router } from 'react-router-dom';
 import App from './App';
 import { StateContextProvider } from './contexts/StateContextProvider';
 import './global.css';
+import { ChatContextProvider } from './contexts/ChatContextProvider';
 
 ReactDom.render(
   <StateContextProvider>
-    <Router>
-      <App />
-    </Router>
+    <ChatContextProvider>
+      <Router>
+        <App />
+      </Router>
+    </ChatContextProvider>
   </StateContextProvider>,
   document.getElementById('root'),
 );

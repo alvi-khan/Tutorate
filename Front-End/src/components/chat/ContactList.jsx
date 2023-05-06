@@ -1,9 +1,11 @@
 import {Avatar, Badge, List, ListItem, ListItemAvatar, ListItemButton, ListItemText} from "@mui/material";
 import {useStateContext} from "../../contexts/StateContextProvider";
+import {useChatContext} from "../../contexts/ChatContextProvider";
 
 export const ContactList = (props) => {
 
     const {user} = useStateContext();
+    const {contactData} = useChatContext();
 
     const getSelectedColor = (contact) => {
         if (props.currentContact && props.currentContact.id == contact.id)    return "#ececec";
@@ -11,8 +13,8 @@ export const ContactList = (props) => {
 
     return(
         <List sx={{ width: '100%', maxWidth: 360 }}>
-            {[...props.userData.keys()].filter(id => id != user.id).map((id, index) => {
-                const contact = props.userData.get(id);
+            {[...contactData.keys()].filter(id => id != user.id).map((id, index) => {
+                const contact = contactData.get(id);
                 const online = contact.keepAliveCount != 0;
                 return (
                     <ListItem key={index} onClick={() => props.selectContact(contact)}>

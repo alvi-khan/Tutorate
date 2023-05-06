@@ -1,6 +1,4 @@
 import React, {useEffect, useState} from 'react'
-import {over} from 'stompjs';
-import SockJS from 'sockjs-client';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "../../stylesheets/ChatRoom.css";
 import {useStateContext} from "../../contexts/StateContextProvider";
@@ -8,136 +6,38 @@ import {ContactList} from "./ContactList";
 import {Link, useLocation} from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import {Avatar} from "@mui/material";
+import {useChatContext} from '../../contexts/ChatContextProvider';
 
-var stompClient = null;
 export const ChatRoom = () => {
     const location = useLocation();
     const {user} = useStateContext();
-    const [messages, setMessages] = useState(new Map());
+    const {messages, setMessages, sendMessage, contactData, downloadContactData} = useChatContext();
     const [receiver, setReceiver] = useState(location.state ? location.state.receiver : null);
     const [input, setInput] = useState("");
-    const [userData, setUserData] = useState(new Map());
-
-    useEffect(async () => {
-        connect();
-    }, [])
 
     useEffect(() => {
-        if (receiver)   downloadUserData(receiver.id);
+        if (receiver)   downloadContactData(receiver.id);
+
+        if (receiver && !messages.get(receiver.id)) {
+            messages.set(receiver.id, []);
+            setMessages(new Map(messages));
+        }
     }, [receiver])
-
-    const connect = () => {
-        let Sock = new SockJS(`${process.env.REACT_APP_BASE_URL}/ws`);
-        stompClient = over(Sock);
-        stompClient.debug = null;   // disable log messages
-        stompClient.connect({}, onConnected, onError);
-    }
-
-    const onError = (err) => {
-        console.log(err);
-    }
-
-    const onConnected = () => {
-        stompClient.subscribe(`/userMessages/${user.id}/`, onNewMessage);
-        stompClient.subscribe(`/userMessages/${user.id}/keepAlive`, keepAlive);
-        stompClient.subscribe(`/statusUpdate`, updateUserStatus);
-        keepAlive(true);
-        retrieveMessages();
-    }
-
-    const updateUserStatus = (payload) => {
-        var userID = JSON.parse(payload.body);
-        userData.delete(userID);
-        downloadUserData(userID);
-    }
-
-    const downloadUserData = async (userID) => {
-        if (userData.get(userID))  return;
-
-        const res = await fetch(`${process.env.REACT_APP_BASE_URL}/user/${userID}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-        });
-        userData.set(userID, await res.json());
-        setUserData(new Map(userData));
-    }
-
-    const retrieveMessages = async () => {
-          const res = await fetch(`${process.env.REACT_APP_BASE_URL}/message/getMessages?userID=${user.id}`, {
-            method: 'GET',
-            credentials: 'include',
-            headers: { 'Content-Type': 'application/json' },
-          });
-
-          const data = await res.json();
-          data.map((item, index) => {
-              downloadUserData(item.senderID);
-              downloadUserData(item.receiverID);
-              let key = item.senderID === user.id ? item.receiverID : item.senderID;
-              if(messages.get(key)) {
-                  messages.get(key).push(item);
-                  setMessages(new Map(messages));
-              }
-              else {
-                  let list = [item];
-                  messages.set(key, list);
-                  setMessages(new Map(messages));
-              }
-          });
-
-          if (receiver && !messages.get(receiver.id)) {
-              messages.set(receiver.id, []);
-              setMessages(new Map(messages));
-          }
-    }
-    
-    const onNewMessage = (payload) => {
-        var payloadData = JSON.parse(payload.body);
-        downloadUserData(payloadData.senderID);
-        if(messages.get(payloadData.senderID)) {
-            messages.get(payloadData.senderID).push(payloadData);
-            setMessages(new Map(messages));
-        }
-        else {
-            let list = [];
-            list.push(payloadData);
-            messages.set(payloadData.senderID, list);
-            setMessages(new Map(messages));
-        }
-    }
-
-    const keepAlive = (payload) => {
-        stompClient.send("/chat/keepAlive", {}, user.id);
-    }
 
     const handleMessage = (event) => {
         const {value} = event.target;
         setInput(value);
     }
 
-    const sendMessage = async() => {
-        if (!stompClient)   return;
-        var chatMessage = {
-            senderID: user.id,
-            receiverID: receiver.id,
-            message: input,
-            status: "SENT"
-        };
-
-        if(user.id !== receiver.id) {
-            messages.get(receiver.id).push(chatMessage);
-            setMessages(new Map(messages));
-        }
-
-        stompClient.send("/chat/messages", {}, JSON.stringify(chatMessage));
+    const handleSend = () => {
+        sendMessage(input, receiver);
         setInput("");
     }
 
     return (
         <div className="chat-box">
             {messages.size !== 0 &&
-                <ContactList userData={userData} currentContact={receiver} selectContact={setReceiver}/>
+                <ContactList currentContact={receiver} selectContact={setReceiver}/>
             }
 
             {messages.size === 0 &&
@@ -167,7 +67,7 @@ export const ChatRoom = () => {
                 <div className="flex-grow chat-content">
                     <ul className="flex-grow chat-messages">
                         {[...messages.get(receiver.id)].map((chat,index) => {
-                            const senderData = userData.get(chat.senderID);
+                            const senderData = contactData.get(chat.senderID);
 
                             return (
                                 <li className={`message ${chat.senderID === user.id && "self"}`} key={index}>
@@ -195,9 +95,14 @@ export const ChatRoom = () => {
                         })}
                     </ul>
                 <div className="send-message">
-                    <TextField placeholder="Type a message..." fullWidth value={input} onChange={handleMessage}
-                    onKeyPress={(e) => {if (e.key === 'Enter') {sendMessage()}}}/>
-                    <button type="button" className="send-button" onClick={sendMessage}>
+                    <TextField
+                        placeholder="Type a message..."
+                        fullWidth
+                        value={input}
+                        onChange={handleMessage}
+                        onKeyPress={(e) => {if (e.key === 'Enter') handleSend();}}
+                    />
+                    <button type="button" className="send-button" onClick={handleSend}>
                         <i className="bi bi-send"/>
                     </button>
                 </div>
