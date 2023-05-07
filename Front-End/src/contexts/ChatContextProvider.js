@@ -37,9 +37,9 @@ export const ChatContextProvider = ({ children }) => {
     }
 
     const onConnected = () => {
-        stompClient.subscribe(`/userMessages/${user.id}/`, onNewMessage);
-        stompClient.subscribe(`/userMessages/${user.id}/update`, onMessageUpdate);
-        stompClient.subscribe(`/contactStatusUpdate`, updateContactStatus);
+        stompClient.subscribe(`/user/${user.id}/messages`, onNewMessage);
+        stompClient.subscribe(`/user/${user.id}/messageUpdate`, onMessageUpdate);
+        stompClient.subscribe(`/user/${user.id}/contactStatusUpdate`, updateContactStatus);
         retrieveMessages(user);
     }
 

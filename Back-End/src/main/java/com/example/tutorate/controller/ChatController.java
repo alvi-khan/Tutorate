@@ -16,9 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 public class ChatController {
@@ -34,10 +32,11 @@ public class ChatController {
     @MessageMapping("/messages")
     public Message receivePrivateMessage(@Payload Message message) {
         messageRepository.save(message);
-        simpMessagingTemplate.convertAndSendToUser(String.valueOf(message.getReceiverID()), "/", message);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(message.getReceiverID()), "/messages", message);
         return message;
     }
 
+    // SimpMessagingTemplate doesn't support ACKs
     @MessageMapping("/markAsDelivered")
     public void markAsDelivered(@Payload int senderID, @Header("simpSessionId") String sessionID) {
         updateMessageStatus(senderID, sessionID, MessageStatus.DELIVERED);
@@ -59,7 +58,7 @@ public class ChatController {
         payload.put("receiverID", user.getId());
         payload.put("status", status);
 
-        simpMessagingTemplate.convertAndSendToUser(String.valueOf(senderID), "/update", payload);
+        simpMessagingTemplate.convertAndSendToUser(String.valueOf(senderID), "/messageUpdate", payload);
     }
 
     @EventListener
@@ -67,7 +66,7 @@ public class ChatController {
         User user = userRepository.findBySocketSessionID(event.getSessionId());
         user.setSocketSessionID(null);
         userRepository.save(user);
-        simpMessagingTemplate.convertAndSend("/contactStatusUpdate", user.getId());
+        contactStatusUpdateNotification(user.getId());
     }
 
     @EventListener
@@ -79,7 +78,20 @@ public class ChatController {
         User user = userRepository.findById(userID);
         user.setSocketSessionID(sessionID);
         userRepository.save(user);
-        simpMessagingTemplate.convertAndSend("/contactStatusUpdate", userID);
+        contactStatusUpdateNotification(userID);
+    }
+
+    private void contactStatusUpdateNotification(int userID) {
+        List<Message> messages = messageRepository.getMessages(userID);
+        Set<Integer> contacts = new HashSet<>();
+        for(Message message : messages) {
+            if (message.getReceiverID() != userID)  contacts.add(message.getReceiverID());
+            else contacts.add(message.getSenderID());
+        }
+
+        for(Integer contactID : contacts) {
+            simpMessagingTemplate.convertAndSendToUser(String.valueOf(contactID), "/contactStatusUpdate", userID);
+        }
     }
 }
 
