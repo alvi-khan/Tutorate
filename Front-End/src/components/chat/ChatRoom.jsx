@@ -84,9 +84,9 @@ export const ChatRoom = () => {
                                         chat.senderID == user.id &&
                                         <div className="message-data">
                                             {chat.message}
-                                            {chat.status == "SENT" && <i className="bi bi-check2"/>}
-                                            {chat.status == "DELIVERED" && <i className="bi bi-check2-all"/>}
-                                            {chat.status == "READ" && <i className="bi bi-check-circle"/>}
+                                            {chat.status == "SENT" && <i className="bi bi-check"/>}
+                                            {chat.status == "DELIVERED" && <i className="bi bi-check-circle"/>}
+                                            {chat.status == "READ" && <i style={{color: "#5EBCD7"}} className="bi bi-check-circle-fill"/>}
                                         </div>
                                     }
                                 </li>
