@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useRef, useState } from 'react';
 import {over} from 'stompjs';
 import SockJS from 'sockjs-client';
 import {useStateContext} from "./StateContextProvider";
@@ -11,8 +11,10 @@ export const ChatContextProvider = ({ children }) => {
     const [contactData, setContactData] = useState(new Map());
     const [stompClient, setStompClient] = useState(null);
     const [receiver, setReceiver] = useState(null);
+    const receiverRef = useRef();
 
     useEffect(() => {
+        receiverRef.current = receiver;
         if (receiver && !messages.get(receiver.id)) {
             messages.set(receiver.id, []);
             setMessages(new Map(messages));
@@ -53,6 +55,7 @@ export const ChatContextProvider = ({ children }) => {
         if (!stompClient)   return;
         stompClient.disconnect();
         setStompClient(null);
+        setReceiver(null);
         setMessages(new Map());
         setContactData(new Map());
     }
@@ -95,13 +98,16 @@ export const ChatContextProvider = ({ children }) => {
           var senders = new Set();
 
           const data = await res.json();
-          data.map((item, index) => {
+          data.map((item) => {
               downloadContactData(item.senderID);
               downloadContactData(item.receiverID);
-              if (item.status == "SENT" && item.senderID != user.id) {
-                item.status = "DELIVERED";
-                senders.add(item.senderID);
+              
+              if (item.senderID != user.id) {
+                if (item.status != "READ")    senders.add(item.senderID);
+                if (receiver && receiver.id == item.senderID)   item.status = "READ";
+                if (!receiver || receiver.id != item.senderID)  item.status = "DELIVERED";
               }
+              
               let key = item.senderID === user.id ? item.receiverID : item.senderID;
               if(messages.get(key)) {
                   messages.get(key).push(item);
@@ -126,26 +132,34 @@ export const ChatContextProvider = ({ children }) => {
     }
 
     const markAsRead = (senderID) => {
-        const hasUnread = messages.get(senderID).some((message) => message.status != "READ");
-        if (!hasUnread) return;
         stompClient.send("/chat/markAsRead", {}, JSON.stringify(senderID));
     }
-    
+
     const onNewMessage = (payload) => {
-        var payloadData = JSON.parse(payload.body);
+        // cannot access up-to-date state value directly inside callback
+        const currentReceiver = receiverRef.current;
         
-        if (receiver && payloadData.senderID == receiver.id)  markAsRead(payloadData.senderID);
-        else    markAsDelievered(payloadData.senderID);
+        const payloadData = JSON.parse(payload.body);
+        const senderID = payloadData.senderID;
         
-        downloadContactData(payloadData.senderID);
-        if(messages.get(payloadData.senderID)) {
-            messages.get(payloadData.senderID).push(payloadData);
+        if (currentReceiver && senderID == currentReceiver.id) {
+            markAsRead(senderID);
+            payloadData.status = "READ";
+        }
+        else {
+            markAsDelievered(senderID);
+            payloadData.status = "DELIVERED";
+        }
+        
+        downloadContactData(senderID);
+        if(messages.get(senderID)) {
+            messages.get(senderID).push(payloadData);
             setMessages(new Map(messages));
         }
         else {
             let list = [];
             list.push(payloadData);
-            messages.set(payloadData.senderID, list);
+            messages.set(senderID, list);
             setMessages(new Map(messages));
         }
     }
