@@ -1,7 +1,6 @@
 package com.example.tutorate.controller;
 
 import com.example.tutorate.model.*;
-import com.example.tutorate.repository.RatingRepository;
 import com.example.tutorate.repository.TutorRepository;
 import com.example.tutorate.repository.UserRepository;
 import com.example.tutorate.service.RatingService;
@@ -10,11 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@CrossOrigin(origins = {"http://localhost:3000", "https://tutorate.onrender.com", "https://tutorate-private-production.up.railway.app", "https://8080-73c1790e07624f5090a7f3d032810880.onpatr.cloud"}, maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/tutor")
 public class TutorController {
